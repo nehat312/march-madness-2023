@@ -34,10 +34,10 @@ from sklearn.preprocessing import MinMaxScaler
 
 ## DIRECTORY CONFIGURATION ##
 abs_path = r'https://raw.githubusercontent.com/nehat312/march-madness-2023/main'
-players_path = abs_path + '/data/mm_2023_database.xlsx'
+mm_database = abs_path + '/data/mm_2023_database.xlsx'
 
 ## DATA IMPORT ##
-mm_database_2023 = pd.read_xlsx(players_path, index_col='TEAM', header=0, sheet_name='TR')
+mm_database_2023 = pd.read_xlsx(mm_database, index_col='TEAM', header=0, sheet_name='TR')
 
 ## PRE-PROCESSING ##
 # players_path.sort_values(by='disc_year', inplace=True)
@@ -51,54 +51,18 @@ mm_database_2023 = pd.read_xlsx(players_path, index_col='TEAM', header=0, sheet_
 
 ## IMAGE IMPORT ##
 
-## DESIGN IMAGES ##
-nba_logo_1 = Image.open('images/NBA_Logo.png')
-nba_logo_2 = Image.open('images/NBA_Logo2.png')
-court_img_1 = Image.open('images/Court1.png')
-capstone_court = Image.open('images/NBA_Court_Trim.png')
+## FINAL FOUR LOGOS ##
+NCAA_logo = Image.open('images/NCAA_logo1.png')
+FAU_logo = Image.open('images/FAU_Owls.png')
+Miami_logo = Image.open('images/Miami_Canes.png')
+UConn_logo = Image.open('images/UConn_Huskies.png')
+SDSU_logo = Image.open('images/east/CHI-Bulls.png')
 
-## EASTERN CONFERENCE LOGOS ##
-East_logo = Image.open('images/east/NBA_East.png')
-ATL_logo = Image.open('images/east/ATL-Hawks.png')
-BKN_logo = Image.open('images/east/BKN-Nets.png')
-BOS_logo = Image.open('images/east/BOS-Celtics.png')
-CHI_logo = Image.open('images/east/CHI-Bulls.png')
-CHA_logo = Image.open('images/east/CHA-Hornets.png')
-CLE_logo = Image.open('images/east/CLE-Cavaliers.png')
-DET_logo = Image.open('images/east/DET-Pistons.png')
-IND_logo = Image.open('images/east/IND-Pacers.png')
-MIA_logo = Image.open('images/east/MIA-Heat.png')
-MIL_logo = Image.open('images/east/MIL-Bucks.png')
-NYK_logo = Image.open('images/east/NYK-Knicks.png')
-ORL_logo = Image.open('images/east/ORL-Magic.png')
-PHI_logo = Image.open('images/east/PHI-Sixers.png')
-TOR_logo = Image.open('images/east/TOR-Raptors.png')
-WAS_logo = Image.open('images/east/WAS-Wizards.png')
-
-## WESTERN CONFERENCE LOGOS ##
-West_logo = Image.open('images/west/NBA_West.png')
-DAL_logo = Image.open('images/west/DAL-Mavericks.png')
-DEN_logo = Image.open('images/west/DEN-Nuggets.png')
-GSW_logo = Image.open('images/west/GSW-Warriors.png')
-HOU_logo = Image.open('images/west/HOU-Rockets.png')
-LAC_logo = Image.open('images/west/LAC-Clippers.png')
-LAL_logo = Image.open('images/west/LAL-Lakers.png')
-MEM_logo = Image.open('images/west/MEM-Grizzlies.png')
-MIN_logo = Image.open('images/west/MIN-Timberwolves.png')
-NOP_logo = Image.open('images/west/NOP-Pelicans.png')
-PHX_logo = Image.open('images/west/PHX-Suns.png')
-POR_logo = Image.open('images/west/POR-Trailblazers.png')
-SAC_logo = Image.open('images/west/SAC-Kings.png')
-SAS_logo = Image.open('images/west/SAS-Spurs.png')
-OKC_logo = Image.open('images/west/OKC-Thunder.png')
-UTA_logo = Image.open('images/west/UTA-Jazz.png')
 
 
 ## FORMAT / STYLE ##
 
 ## COLOR SCALES ##
-
-
 Tropic = px.colors.diverging.Tropic
 Blackbody = px.colors.sequential.Blackbody
 BlueRed = px.colors.sequential.Bluered
@@ -124,155 +88,111 @@ Speed = px.colors.sequential.speed
 
 ## VISUALIZATION LABELS ##
 
-all_cols = ['YR_TM_PLR', 'YEARS', 'YEAR',
-            'TEAM', 'CHAMP', 'PLAYER', 'NUMBER',
-            'POS', 'WTD POS', 'RD POS',
-            'HEIGHT (IN)',
-            'WEIGHT (LBS)',
-            'BMI', 'W-SPAN (IN)', 'APE',
-            'AGE',  'EXPERIENCE',
-            'NATION', 'COUNTRY',
-            'CONTINENT', 'GLOBAL REGION',
-            'CONFERENCE', 'COLLEGE',
-            'SALARY', '% SALARY', 'TM TTL SAL', 'NBA SAL CAP', 'NBA TM AVG SAL',
-            '$MM/eWIN', '$MM/TmWIN', '$MM/PlrWS',
-            'MP', 'PER', 'WTD-PER', 'AGE',
-            'TS%', 'AST%', 'STL%', 'BLK%', 'TO%',
-            'AST%/TO%', 'STOCK%',
-            'D-WS', 'O-WS', 'WS', 'WS_VAL', 'TM-WS',
-            'RAPTOR', 'RAPTOR_VAL', 'TM-RAPTOR',
-            'LEBRON', 'LEBRON_VAL', 'TM-LEBRON', #D #O
-            'USG%', 'TS%',
+all_cols = [
             ]
 
-
-viz_cols = ['YEAR', 'TEAM', 'CHAMP', 'PLAYER', 'WTD POS', 'RD POS',
-            'HEIGHT (IN)', 'WEIGHT (LBS)', 'BMI', 'W-SPAN (IN)', 'APE',
-            'AGE',  'EXPERIENCE',
-            'NATION', 'COUNTRY',
-            'CONTINENT', 'GLOBAL REGION',
-            'CONFERENCE', 'COLLEGE',
-            'SALARY', '% SALARY', 'TM TTL SAL', 'NBA SAL CAP', 'NBA TM AVG SAL',
-            '$MM/eWIN', '$MM/TmWIN', '$MM/PlrWS',
-            'MP', #'PER', 'WTD-PER',
-            'USG%', 'TS%', 'AST%', 'STL%', 'BLK%', 'TO%',
-            'AST%/TO%', 'STOCK%',
-            'D-WS', 'O-WS', 'WS',  'TM-WS', 'TM-RAPTOR', 'TM-LEBRON',
-            'RAPTOR', 'LEBRON',
-
-            'RAPTOR_VAL', 'LEBRON_VAL', 'WS_VAL',
+viz_cols = ['SEED', 'KenPom RANK', 'NET RANK',
+            'WIN', 'LOSS',
+            'WIN% ALL GM', 'WIN% CLOSE GM',
+            'KenPom EM', #'AdjO', 'AdjD', #'KP_Rank', #'AdjT', 'Luck',
+            'KenPom SOS EM', #'SOS OppO', 'SOS OppD', 'NCSOS Adj EM'
+            'OFF EFF', 'DEF EFF',
+            'AVG MARGIN', #'opponent-average-scoring-margin',
+            'PTS/GM', 'OPP PTS/GM',
+            'eFG%', 'OPP eFG%', 'TS%', 'OPP TS%',
+            'AST/TO%', #'NET AST/TOV RATIO',
+            'STOCKS/GM', 'STOCKS-TOV/GM',
             ]
 
-
-scale_cols = ['PLAYER', 'NUMBER',
-            'POS', 'WTD POS', 'RD POS',
-            'HEIGHT (IN)',
-            'WEIGHT (LBS)',
-            'BMI', 'W-SPAN (IN)', 'APE',
-            'AGE',  'EXPERIENCE',
-            'NATION', 'COUNTRY',
-            'CONTINENT', 'GLOBAL REGION',
-            'CONFERENCE', 'COLLEGE',
-            'RAPTOR', 'WS', #'LEBRON',
-            'BMI', 'W-SPAN (IN)', 'APE',
-            'AGE', #'EXPERIENCE',
-            'USG%', 'TS%', 'AST%', 'STL%', 'BLK%', 'TO%',
-            'AST%/TO%', 'STOCK%',
-            'SALARY', 'TM TTL SAL',
-            'NBA SAL CAP', 'NBA TM AVG SAL',
-            '$MM/eWIN', '$MM/TmWIN', '$MM/PlrWS',
+scale_cols = [
             ]
 
-team_df_cols = ['CHAMP', 'PLAYER', 'AGE', 'EXPERIENCE',
-                'COUNTRY', 'COLLEGE', #'CONFERENCE',
-                 'MP', 'WTD POS',
-                'BMI', 'W-SPAN (IN)', 'APE',
-                'USG%', 'TS%',
-                # 'AST%', 'STL%', 'BLK%', 'TO%',
-                'AST%/TO%', 'STOCK%', 'WS',
-                'SALARY', 'TM TTL SAL',
-                'NBA SAL CAP', 'NBA TM AVG SAL',
-                  # 'RAPTOR', #'LEBRON',
-                '$MM/eWIN', '$MM/TmWIN', '$MM/PlrWS',
+team_df_cols = [
                 ]
 
-chart_labels = {'W-SPAN (IN)':'WINGSPAN (IN)',
-                'APE':'APE INDEX',
-                'WTD POS':'WTD POS',
-                'RD POS':'POS',
-                'CHAMP':'YR-TM',
-                'LEBRON_VAL':'LEBRON/$',
-                'RAPTOR_VAL':'RAPTOR/$',
-                'SALARY':'SALARY ($)',
-                'WS_VAL':'WS/$',
-                'TM TTL SAL':'TTL TEAM SALARY',
-                'NBA SAL CAP':'NBA SALARY CAP',
-                'NBA TM AVG SAL':'AVG NBA TEAM SALARY',
-                '1991':'1991-CHI', '1992':'1992-CHI', '1993':'1993-CHI',
-                '1994':'1994-HOU', '1995':'1995-HOU',
-                '1996':'1996-CHI', '1997':'1997-CHI', '1998':'1998-CHI',
-                '1999':'1999-SAS', '2000':'2000-LAL', '2001':'2001-LAL', '2002':'2002-LAL',
-                '2003':'2003-SAS', '2004':'2004-DET', '2005':'2005-SAS',
-                '2006':'2006-MIA', '2007':'2007-SAS', '2008':'2008-BOS',
-                '2009':'2009-LAL', '2010':'2010-LAL',
-                '2011':'2011-DAL', '2012':'2012-MIA', '2013':'2013-MIA', '2014':'2014-SAS',
-                '2015':'2015-GSW', '2016':'2016-CLE', '2017':'2017-GSW', '2018':'2018-GSW',
-                '2019':'2019-TOR', '2020':'2020-LAL', '2021':'2021-MIL', '2022':'2022-GSW',
-                # '':'',
+chart_labels = {'':'',
+                'Team': 'TEAM', 'TEAM_KP': 'TEAM', 'TEAM_TR': 'TEAM',
+                'Conference': 'CONFERENCE', 'Seed': 'SEED',
+                'Win': 'WIN', 'Loss': 'LOSS',
+                'win-pct-all-games': 'WIN%', 'win-pct-close-games': 'WIN%_CLOSE',
+
+                'points-per-game': 'PTS/GM', 'average-scoring-margin': 'AVG_MARGIN',
+                'effective-field-goal-pct': 'EFG%', 'true-shooting-percentage': 'TS%',
+                'effective-possession-ratio': 'POSS%',
+                'three-point-pct': '3P%', 'two-point-pct': '2P%', 'free-throw-pct': 'FT%',
+                'field-goals-made-per-game': 'FGM/GM', 'field-goals-attempted-per-game': 'FGA/GM',
+                'three-pointers-made-per-game': '3PM/GM', 'three-pointers-attempted-per-game': '3PA/GM',
+                'offensive-efficiency': 'O_EFF', 'defensive-efficiency': 'D_EFF',
+                'total-rebounds-per-game': 'TRB/GM', 'offensive-rebounds-per-game': 'ORB/GM',
+                'defensive-rebounds-per-game': 'DRB/GM',
+                'offensive-rebounding-pct': 'ORB%', 'defensive-rebounding-pct': 'DRB%',
+                'total-rebounding-percentage': 'TRB%',
+                'blocks-per-game': 'B/GM', 'steals-per-game': 'S/GM', 'assists-per-game': 'AST/GM',
+                'turnovers-per-game': 'TO/GM',
+                'assist--per--turnover-ratio': 'AST/TO', 'possessions-per-game': 'POSS/GM',
+                'personal-fouls-per-game': 'PF/GM',
+                'opponent-points-per-game': 'OPP_PTS/GM', 'opponent-average-scoring-margin': 'OPP_AVG_MARGIN',
+                'opponent-effective-field-goal-pct': 'OPP_EFG%', 'opponent-true-shooting-percentage': 'OPP_TS%',
+                'opponent-three-point-pct': 'OPP_3P%', 'opponent-two-point-pct': 'OPP_2P%',
+                'opponent-free-throw-pct': 'OPP_FT%', 'opponent-shooting-pct': 'OPP_FG%',
+                'opponent-assists-per-game': 'OPP_AST/GM', 'opponent-turnovers-per-game': 'OPP_TO/GM',
+                'opponent-assist--per--turnover-ratio': 'OPP_AST/TO',
+                'opponent-offensive-rebounds-per-game': 'OPP_OREB/GM',
+                'opponent-defensive-rebounds-per-game': 'OPP_DREB/GM',
+                'opponent-total-rebounds-per-game': 'OPP_TREB/GM',
+                'opponent-offensive-rebounding-pct': 'OPP_OREB%', 'opponent-defensive-rebounding-pct': 'OPP_DREB%',
+                'opponent-blocks-per-game': 'OPP_BLK/GM', 'opponent-steals-per-game': 'OPP_STL/GM',
+                'opponent-effective-possession-ratio': 'OPP_POSS%',
+                'net-avg-scoring-margin': 'NET_AVG_MARGIN', 'net-points-per-game': 'NET_PTS/GM',
+                'net-adj-efficiency': 'NET_ADJ_EFF',
+                'net-effective-field-goal-pct': 'NET_EFG%', 'net-true-shooting-percentage': 'NET_TS%',
+                'stocks-per-game': 'STOCKS/GM', 'total-turnovers-per-game': 'TTL_TO/GM',
+                'net-assist--per--turnover-ratio': 'NET_AST/TO',
+                'net-total-rebounds-per-game': 'NET_TREB/GM', 'net-off-rebound-pct': 'NET_OREB%',
+                'net-def-rebound-pct': 'NET_DREB%',
+                # 'win-pct-all-games':'WIN%', 'win-pct-close-games':'CLOSE GM WIN%',
+                # 'offensive-efficiency':'OFF EFF', 'defensive-efficiency':'DEF EFF',
+                'Adj EM': 'KenPom ADJ EM', 'SOS Adj EM': 'KenPom SOS ADJ EM',
+                'points-per-game': 'PTS/GM', 'opponent-points-per-game': 'OPP PTS/GM',
+                'average-scoring-margin': 'AVG SCORE MARGIN', 'opponent-average-scoring-margin': 'OPP AVG SCORE MARGIN',
+                'effective-field-goal-pct': 'eFG%', 'true-shooting-percentage': 'TS%',
+                'opponent-effective-field-goal-pct': 'OPP eFG%', 'opponent-true-shooting-percentage': 'OPP TS%',
+                'assist--per--turnover-ratio': 'AST_TOV_RATIO', 'NET AST/TOV RATIO': 'NET AST/TOV%',
+                'STOCKS-per-game': 'STOCKS/GM', 'STOCKS-TOV-per-game': 'STOCKS-TOV/GM',
+                'MMS STOCKS-TOV-per-game': 'STOCKS-TOV/GM', 'MMS Adj EM': 'KenPom ADJ EM',
+
                 }
 
-team_logos_dict = {'ATL':ATL_logo, 'BKN':BKN_logo, 'BOS':BOS_logo, 'CHI':CHI_logo, 'CHA':CHA_logo,
-                   'CLE':CLE_logo, 'DET':DET_logo, 'IND':IND_logo, 'MIL':MIL_logo, 'MIA':MIA_logo,
-                   'NYK':NYK_logo, 'ORL':ORL_logo, 'PHI':PHI_logo, 'TOR':TOR_logo, 'WAS':WAS_logo,
-                   'DAL':DAL_logo, 'DEN':DEN_logo, 'GSW':GSW_logo, 'HOU':HOU_logo, 'LAC':LAC_logo,
-                   'LAL':LAL_logo, 'MEM':MEM_logo, 'MIN':MIN_logo, 'NOP':NOP_logo, 'PHX':PHX_logo,
-                   'POR':POR_logo, 'SAC':SAC_logo, 'SAS':SAS_logo, 'OKC':OKC_logo, 'UTA':UTA_logo,
+team_logos_dict = {'FAU OWLS':FAU_logo,
+                   'MIAMI HURRICANES':Miami_logo,
+                   'UCONN HUSKIES':UConn_logo,
+                   'SDSU AZTECS':SDSU_logo,
                    }
 
 #https://nbacolors.com/team/washington-wizards-color
 #https://teamcolorcodes.com/nba-team-color-codes/
-team_colors_dict = {'ATL':['#E03A3E','#C1D32F','#26282A'], 'BKN':['#000000','#FFFFFF'], 'BOS':['#007A33','#007A33'],
-                    'CHI':[''], 'CHA':[], 'CLE':[], 'DET':[], 'IND':[], 'MIL':[], 'MIA':[],
-                   'NYK':[], 'ORL':[], 'PHI':[], 'TOR':[], 'WAS':[],
-                   'DAL':[], 'DEN':[], 'GSW':[], 'HOU':[], 'LAC':[],
-                   'LAL':[], 'MEM':[], 'MIN':[], 'NOP':[], 'PHX':[],
-                   'POR':[], 'SAC':[], 'SAS':[], 'OKC':[], 'UTA':[],
-                   }
+
+# team_colors_dict = {'FAU OWLS':['#E03A3E','#C1D32F','#26282A'],
+#                     'MIAMI HURRICANES':['#000000','#FFFFFF'],
+#                     'UCONN HUSKIES':['#007A33','#007A33'],
+#                     'SDSU AZTECS':['#000000','#FFFFFF'],
+#                   }
 
 ## COURT BACKGROUND ##
-court_img_dict = dict(source=court_img_1, xref="paper", yref="paper", x=0.5, y=0.5, sizex=2.5, sizey=1,
-                      xanchor="center", yanchor="middle", #left right  #top bottom
-                      opacity=.35, visible=True, layer="below", # sizing="contain",
-                      )
-
-court_img_dict_3D = dict(source=court_img_1, xref="paper", yref="paper", x=0.5, y=0.5, sizex=1.25, sizey=1,
-                      xanchor="center", yanchor="middle", #left right  #top bottom
-                      opacity=.15, visible=True, layer="below", # sizing="contain",
-                      )
+# court_img_dict = dict(source=court_img_1, xref="paper", yref="paper", x=0.5, y=0.5, sizex=2.5, sizey=1,
+#                       xanchor="center", yanchor="middle", #left right  #top bottom
+#                       opacity=.35, visible=True, layer="below", # sizing="contain",
+#                       )
 
 ## FEATURED VARIABLES ##
 
-team_list = list(champion_players['TEAM'].unique())
-champ_list = list(champion_players['CHAMP'].unique())
-college_list = list(champion_players['COLLEGE'].unique())
-conference_list = list(champion_players['CONFERENCE'].unique())
-country_list = list(champion_players['COUNTRY'].unique())
-region_list = list(champion_players['GLOBAL REGION'].unique())
+# team_list = list(champion_players['TEAM'].unique())
 
-team_logos_list = [ATL_logo, BKN_logo, BOS_logo, CHI_logo, CHA_logo,
-                    CLE_logo, DET_logo, IND_logo, MIA_logo, MIL_logo,
-                    NYK_logo, ORL_logo, PHI_logo, TOR_logo, WAS_logo,
-                    DAL_logo, DEN_logo, HOU_logo, LAC_logo, LAL_logo,
-                    GSW_logo, MEM_logo, MIN_logo, MEM_logo, PHX_logo,
-                    SAS_logo, SAC_logo, OKC_logo, UTA_logo, POR_logo]
+team_logos_list = []
 
-eastconf_logos_list = [ATL_logo, BKN_logo, BOS_logo, CHI_logo, CHA_logo,
-                       CLE_logo, DET_logo, IND_logo, MIA_logo, MIL_logo,
-                       NYK_logo, ORL_logo, PHI_logo, TOR_logo, WAS_logo]
+eastconf_logos_list = []
 
-westconf_logos_list = [DAL_logo, DEN_logo, HOU_logo, LAC_logo, LAL_logo,
-                       GSW_logo, MEM_logo, MIN_logo, MEM_logo, PHX_logo,
-                       SAS_logo, SAC_logo, OKC_logo, UTA_logo, POR_logo]
+westconf_logos_list = []
 
 
 # champion_players['LOGO'] = champion_players.TEAM.map(team_logos_dict)
@@ -288,9 +208,10 @@ westconf_logos_list = [DAL_logo, DEN_logo, HOU_logo, LAC_logo, LAL_logo,
 
 
 ## FILTER DATA ##
-champion_players = champion_players[viz_cols]
-champion_players = champion_players[champion_players['MP'] > 350] #175
-lebron_val_players = champion_players[champion_players['YEAR'] >= 2010]
+mm_database_2023 = mm_database_2023[viz_cols]
+
+# champion_players = champion_players[champion_players['MP'] > 350] #175
+# lebron_val_players = champion_players[champion_players['YEAR'] >= 2010]
 
 
 ## TO DO / NOTES
@@ -318,51 +239,9 @@ lebron_val_players = champion_players[champion_players['YEAR'] >= 2010]
 
 ## GROUP BY CHAMPIONSHIP TEAM
 
-champion_teams = champion_players[team_df_cols]
-champion_teams = champion_teams.astype(str)
+# champion_teams = champion_players[team_df_cols]
 
-chi_bulls_1991 = champion_teams[champion_teams['CHAMP'] == '1991-CHI']
-chi_bulls_1992 = champion_teams[champion_teams['CHAMP'] == '1992-CHI']
-chi_bulls_1993 = champion_teams[champion_teams['CHAMP'] == '1993-CHI']
-hou_rockets_1994 = champion_teams[champion_teams['CHAMP'] == '1994-HOU']
-hou_rockets_1995 = champion_teams[champion_teams['CHAMP'] == '1995-HOU']
-chi_bulls_1996 = champion_teams[champion_teams['CHAMP'] == '1996-CHI']
-chi_bulls_1997 = champion_teams[champion_teams['CHAMP'] == '1997-CHI']
-chi_bulls_1998 = champion_teams[champion_teams['CHAMP'] == '1998-CHI']
-sas_spurs_1999 = champion_teams[champion_teams['CHAMP'] == '1999-SAS']
-lal_lakers_2000 = champion_teams[champion_teams['CHAMP'] == '2000-LAL']
-lal_lakers_2001 = champion_teams[champion_teams['CHAMP'] == '2001-LAL']
-lal_lakers_2002 = champion_teams[champion_teams['CHAMP'] == '2002-LAL']
-sas_spurs_2003 = champion_teams[champion_teams['CHAMP'] == '2003-SAS']
-det_pistons_2004 = champion_teams[champion_teams['CHAMP'] == '2004-DET']
-sas_spurs_2005 = champion_teams[champion_teams['CHAMP'] == '2005-SAS']
-mia_heat_2006 = champion_teams[champion_teams['CHAMP'] == '2006-MIA']
-sas_spurs_2007 = champion_teams[champion_teams['CHAMP'] == '2007-SAS']
-bos_celtics_2008 = champion_teams[champion_teams['CHAMP'] == '2008-BOS']
-lal_lakers_2009 = champion_teams[champion_teams['CHAMP'] == '2009-LAL']
-lal_lakers_2010 = champion_teams[champion_teams['CHAMP'] == '2010-LAL']
-dal_mavs_2011 = champion_teams[champion_teams['CHAMP'] == '2011-DAL']
-mia_heat_2012 = champion_teams[champion_teams['CHAMP'] == '2012-MIA']
-mia_heat_2013 = champion_teams[champion_teams['CHAMP'] == '2013-MIA']
-sas_spurs_2014 = champion_teams[champion_teams['CHAMP'] == '2014-SAS']
-gsw_warriors_2015 = champion_teams[champion_teams['CHAMP'] == '2015-GSW']
-cle_cavs_2016 = champion_teams[champion_teams['CHAMP'] == '2016-CLE']
-gsw_warriors_2017 = champion_teams[champion_teams['CHAMP'] == '2017-GSW']
-gsw_warriors_2018 = champion_teams[champion_teams['CHAMP'] == '2018-GSW']
-tor_raptors_2019 = champion_teams[champion_teams['CHAMP'] == '2019-TOR']
-lal_lakers_2020 = champion_teams[champion_teams['CHAMP'] == '2020-LAL']
-mil_bucks_2021 = champion_teams[champion_teams['CHAMP'] == '2021-MIL']
-gsw_warriors_2022 = champion_teams[champion_teams['CHAMP'] == '2022-GSW']
-
-champ_df_list = [chi_bulls_1991, chi_bulls_1992, chi_bulls_1993,
-                 hou_rockets_1994, hou_rockets_1995,
-                 chi_bulls_1996, chi_bulls_1997, chi_bulls_1998,
-                 sas_spurs_1999, lal_lakers_2000, lal_lakers_2001, lal_lakers_2002,
-                 sas_spurs_2003, det_pistons_2004, sas_spurs_2005,
-                 mia_heat_2006, sas_spurs_2007, bos_celtics_2008, lal_lakers_2009, lal_lakers_2010,
-                 dal_mavs_2011, mia_heat_2012, mia_heat_2013, sas_spurs_2014, gsw_warriors_2015,
-                 cle_cavs_2016, gsw_warriors_2017, gsw_warriors_2018,
-                 tor_raptors_2019, lal_lakers_2020, mil_bucks_2021, gsw_warriors_2022,
+champ_df_list = [
                  ]
 
 for df in champ_df_list:
@@ -735,24 +614,13 @@ st.title('CHAMPIONSHIP-CALIBER NBA ROSTER CONSTRUCTION')
 st.write('*STATISTICAL BREAKDOWN OF HISTORICAL AND MODERN-DAY NBA CHAMPIONSHIP ROSTERS*')
 
 ## EAST LOGOS ##
-EA_col_1, EA_col_2, EA_col_3, EA_col_4, EA_col_5, \
-EC_col_1, EC_col_2, EC_col_3, EC_col_4, EC_col_5, \
-ES_col_1, ES_col_2, ES_col_3, ES_col_4, ES_col_5 = st.columns(15)
-EA_col_1.image(BKN_logo, caption='BKN', width=35)
-EA_col_2.image(BOS_logo, caption='BOS', width=35)
-EA_col_3.image(NYK_logo, caption='NYK', width=35)
-EA_col_4.image(PHI_logo, caption='PHI', width=35)
-EA_col_5.image(TOR_logo, caption='TOR', width=35)
-EC_col_1.image(CHI_logo, caption='CHI', width=35)
-EC_col_2.image(CLE_logo, caption='CLE', width=35)
-EC_col_3.image(DET_logo, caption='DET', width=35)
-EC_col_4.image(IND_logo, caption='IND', width=35)
-EC_col_5.image(MIL_logo, caption='MIL', width=35)
-ES_col_1.image(ATL_logo, caption='ATL', width=35)
-ES_col_2.image(MIA_logo, caption='MIA', width=35)
-ES_col_3.image(ORL_logo, caption='ORL', width=35)
-ES_col_4.image(WAS_logo, caption='WAS', width=35)
-ES_col_5.image(CHA_logo, caption='CHA', width=35)
+MM_col_0, MM_col_1, MM_col_2, MM_col_3, MM_col_4, = st.columns(5)
+
+MM_col_0.image(NCAA_logo, caption='BKN', width=35)
+MM_col_1.image(FAU_logo, caption='BOS', width=35)
+MM_col_2.image(Miami_logo, caption='NYK', width=35)
+MM_col_3.image(UConn_logo, caption='PHI', width=35)
+MM_col_4.image(SDSU_logo, caption='PHI', width=35)
 
 ## WEST LOGOS ##
 WN_col_1, WN_col_2, WN_col_3, WN_col_4, WN_col_5, \
@@ -762,17 +630,7 @@ WN_col_1.image(DEN_logo, caption='DEN', width=35)
 WN_col_2.image(MIN_logo, caption='MIN', width=35)
 WN_col_3.image(POR_logo, caption='POR', width=35)
 WN_col_4.image(OKC_logo, caption='OKC', width=35)
-WN_col_5.image(UTA_logo, caption='UTA', width=35)
-WP_col_1.image(GSW_logo, caption='GSW', width=35)
-WP_col_2.image(LAC_logo, caption='LAC', width=35)
-WP_col_3.image(LAL_logo, caption='LAL', width=35)
-WP_col_4.image(PHX_logo, caption='PHX', width=35)
-WP_col_5.image(SAC_logo, caption='SAC', width=35)
-WS_col_1.image(NOP_logo, caption='NOP', width=35)
-WS_col_2.image(DAL_logo, caption='DAL', width=35)
-WS_col_3.image(HOU_logo, caption='HOU', width=35)
-WS_col_4.image(SAS_logo, caption='SAS', width=35)
-WS_col_5.image(MEM_logo, caption='MEM', width=35)
+
 
 tab_0, tab_1, tab_2, tab_3, tab_4, tab_5, tab_6, tab_7, tab_8, tab_9, tab_10, \
 tab_11, tab_12, tab_13, tab_14, tab_15, tab_16, tab_17, tab_18, tab_19, tab_20, \
