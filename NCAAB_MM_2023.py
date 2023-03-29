@@ -470,7 +470,7 @@ table_row21 = {'selector': '.row21',
 
 table_col0 = {'selector': '.row0',
               'props': [('border-left', '3px solid #000000'),
-                        #('min-width:', '100px'), ('max-width:', '100px'), ('column-width:', '100px'),
+                        ('min-width:', '75px'), ('max-width:', '75px'), ('column-width:', '75px'),
                         ]}
 
 table_col1 = {'selector': '.col1',
