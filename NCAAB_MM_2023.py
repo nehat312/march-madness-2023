@@ -971,7 +971,8 @@ with tab_0:
 
     ## EAST REGION ##
     st.subheader('EAST REGION')
-    st.table(
+
+    st.markdown( #st.table(
         East_region_styler.format('{:.2f}', na_rep='NA').set_table_styles([header, header_level0, index, top_row,
                                                                            numbers, borders_right,
                                                                            table_row1, table_row2, table_row3,
@@ -992,7 +993,8 @@ with tab_0:
                                                                            ]).set_properties(**{'min-width': '55px'},
                                                                                              **{'max-width': '55px'},
                                                                                              **{'column-width': '55px'},
-                                                                                             **{'width': '55px'}, ))
+                                                                                             **{'width': '55px'},
+                                                                                             ).to_html(table_uuid='east_region'), unsafe_allow_html=True)
 
     ## WEST REGION ##
     st.subheader('WEST REGION')
