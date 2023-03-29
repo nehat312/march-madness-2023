@@ -14,7 +14,6 @@ from PIL import Image
 import datetime
 
 from sklearn.preprocessing import StandardScaler
-from sklearn.decomposition import PCA
 from sklearn.preprocessing import MinMaxScaler
 
 # from streamlit_aggrid import AgGrid
@@ -58,7 +57,7 @@ NCAA_logo = Image.open('images/NCAA_logo1.png')
 FAU_logo = Image.open('images/FAU_Owls.png')
 Miami_logo = Image.open('images/Miami_Canes.png')
 UConn_logo = Image.open('images/UConn_Huskies.png')
-SDSU_logo = Image.open('images/east/CHI-Bulls.png')
+SDSU_logo = Image.open('images/SDSU_Aztecs.png')
 
 
 
