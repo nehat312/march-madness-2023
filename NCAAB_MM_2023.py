@@ -972,7 +972,7 @@ with tab_0:
     ## EAST REGION ##
     st.subheader('EAST REGION')
     st.dataframe(
-        East_region_styler.apply.format('{:.2f}', na_rep='NA').set_table_styles([header, header_level0, index, top_row,
+        East_region_styler.format('{:.2f}', na_rep='NA').set_table_styles([header, header_level0, index, top_row,
                                                                            numbers, borders_right,
                                                                            table_row1, table_row2, table_row3,
                                                                            table_row4, table_row5, table_row6,
