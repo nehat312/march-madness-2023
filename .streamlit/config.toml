@@ -3,8 +3,8 @@
 ## HARDWOOD THEME ##
 primaryColor="#DADADA"
 backgroundColor= "#1A1A1D" #"" #hardwoodlightbrown attempts: #"#E9D0AF" #E4C49B  #DEB887 
-secondaryBackgroundColor="#DADADA"  #spacegray:"#020202" 
-textColor= "#D4AF37" #"#F29539" #"#1A1A1D" #spaceblack 
+secondaryBackgroundColor="#DADADA"
+textColor= "#DADADA"
 font="sans serif"
 
 
