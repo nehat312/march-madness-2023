@@ -38,8 +38,8 @@ mm_database_xlsx = abs_path + '/data/mm_2023_database.xlsx'
 mm_database_csv = abs_path + '/data/mm_2023_database.csv'
 
 ## DATA IMPORT ##
-mm_database_2023 = pd.read_xlsx(mm_database_xlsx, index_col='TEAM', header=0, sheet_name='TR')
-# mm_database_2023 = pd.read_csv(mm_database_csv, index_col='TEAM')
+# mm_database_2023 = pd.read_xlsx(mm_database_xlsx, index_col='TEAM', header=0, sheet_name='TR')
+mm_database_2023 = pd.read_csv(mm_database_csv, index_col='TEAM')
 
 ## PRE-PROCESSING ##
 # players_path.sort_values(by='disc_year', inplace=True)
