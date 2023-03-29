@@ -34,10 +34,12 @@ from sklearn.preprocessing import MinMaxScaler
 
 ## DIRECTORY CONFIGURATION ##
 abs_path = r'https://raw.githubusercontent.com/nehat312/march-madness-2023/main'
-mm_database = abs_path + '/data/mm_2023_database.xlsx'
+mm_database_xlsx = abs_path + '/data/mm_2023_database.xlsx'
+mm_database_csv = abs_path + '/data/mm_2023_database.csv'
 
 ## DATA IMPORT ##
-mm_database_2023 = pd.read_xlsx(mm_database, index_col='TEAM', header=0, sheet_name='TR')
+mm_database_2023 = pd.read_xlsx(mm_database_xlsx, index_col='TEAM', header=0, sheet_name='TR')
+# mm_database_2023 = pd.read_csv(mm_database_csv, index_col='TEAM')
 
 ## PRE-PROCESSING ##
 # players_path.sort_values(by='disc_year', inplace=True)
@@ -61,6 +63,22 @@ SDSU_logo = Image.open('images/east/CHI-Bulls.png')
 
 
 ## FORMAT / STYLE ##
+
+## CHART BACKGROUND ##
+
+viz_margin_dict = dict(l=20, r=20, t=50, b=20)
+viz_bg_color = '#0360CE' #"LightSteelBlue"
+viz_font_dict=dict(size=12, color='#FFFFFF') #  family="Courier New, monospace",
+  #F5DFC9 - Court #0360CE - Blue #0360CE - "LightSteelBlue" #FFFFFF - White #000000 - Black
+
+
+# viz_border_shape = go.layout.Shape(type='rect', xref='paper', yref='paper',  line={'width': 1, 'color': 'black'}) #x0=0, y0=-0.1, x1=1.01, y1=1.02,
+
+
+## PANDAS STYLER ##
+
+# pd.options.display.float_format = '{:,.2f}'.format
+# pd.set_option('display.float_format', lambda x: '%.2f' % x)
 
 ## COLOR SCALES ##
 Tropic = px.colors.diverging.Tropic
@@ -91,7 +109,40 @@ Speed = px.colors.sequential.speed
 all_cols = [
             ]
 
-viz_cols = ['SEED', 'KenPom RANK', 'NET RANK',
+live_cols = ['TEAM_KP', 'CONFERENCE', 'CONF_TYPE', 'WIN', 'LOSS', 'SEED', 'PTS/GM',
+       'AVG MARGIN', 'FGM/GM', 'FGA/GM', 'OFF EFF', 'DEF EFF', 'eFG%', 'TS%',
+       '3PT%', '2PT%', 'FT%', '3PTM/GM', '3PTA/GM', 'OFF REB/GM', 'DEF REB/GM',
+       'TTL REB/GM', 'OFF REB%', 'DEF REB%', 'TTL REB%', 'BLKS/GM', 'STL/GM',
+       'AST/GM', 'TO/GM', 'AST/TO%', 'WIN% ALL GM', 'WIN% CLOSE GM', 'POSS/GM',
+       'PF/GM', 'OPP PTS/GM', 'OPP AVG MARGIN', 'OPP FG%', 'OPP eFG%',
+       'OPP 3PT%', 'OPP 2PT%', 'OPP FT%', 'OPP TS%', 'OPP AST/GM', 'OPP TO/GM',
+       'OPP AST/TO%', 'NET AST/TOV RATIO', 'STOCKS/GM', 'STOCKS-TOV/GM',
+       'NET RANK', 'KenPom RANK', 'KenPom EM', 'KenPom AdjO', 'KenPom AdjD',
+       'KenPom AdjT', 'KenPom Luck', 'KenPom SOS EM', 'KenPom SOS OppO',
+       'KenPom SOS OppD', 'KenPom NCSOS Adj EM',
+       ]
+
+historical_cols = ['Season', 'SznDayNum', 'DayNumGm', 'Date', 'Month', 'WTeamID',
+       'WTeam_TR', 'LTeamID', 'LTeam_TR', 'WConf', 'LConf', 'Champion',
+       'Reg_MM', 'Net_WRatio', 'W_WRatio', 'L_WRatio', 'WGP', 'LGP', 'WWin',
+       'WLoss', 'LWin', 'LLoss', 'NetMarginAvg', 'WMarginAvg', 'LMarginAvg',
+       'WMargin', 'LMargin', 'WScore', 'LScore', 'Seed_2023', 'Seed_2022',
+       'KP_Rank_2022', 'Seed', 'KP_Rank', 'KP_ADJ_EM', 'KP_ADJ_O', 'KP_ADJ_D',
+       'City', 'State', 'Venue', 'Venue_Capacity', 'Mascot', 'Mascot2',
+       'tax_family', 'tax_order', 'tax_class', 'tax_phylum', 'tax_kingdom',
+       'tax_domain', 'WLoc', 'NumOT', 'WFGM', 'WFGA', 'WFGM3', 'WFGA3', 'WFTM',
+       'WFTA', 'WOR', 'WDR', 'WAst', 'WTO', 'WStl', 'WBlk', 'WPF', 'LFGM',
+       'LFGA', 'LFGM3', 'LFGA3', 'LFTM', 'LFTA', 'LOR', 'LDR', 'LAst', 'LTO',
+       'LStl', 'LBlk', 'LPF', 'WEFG', 'LEFG', 'WTS', 'LTS', 'WStock', 'LStock',
+       'WAst/TO', 'LAst/TO', 'WStock/TO', 'LStock/TO', 'WStock_TO',
+       'LStock_TO', 'WAvgEFG', 'LAvgEFG', 'WAvgTS', 'LAvgTS', 'WAvgAst/TO',
+       'LAvgAst/TO', 'WAvgStock/TO', 'LAvgStock/TO', 'WAvgStock_TO',
+       'LAvgStock_TO', 'NetEFG', 'NetTS', 'NetAst/TO', 'NetStock/TO',
+       'NetStock_TO', 'NetAvgEFG', 'NetAvgTS', 'NetAvgAst/TO',
+       'NetAvgStock/TO', 'NetAvgStock_TO',
+       ]
+
+tourney_matchup_cols = ['SEED', 'KenPom RANK', 'NET RANK',
             'WIN', 'LOSS',
             'WIN% ALL GM', 'WIN% CLOSE GM',
             'KenPom EM', #'AdjO', 'AdjD', #'KP_Rank', #'AdjT', 'Luck',
@@ -110,14 +161,10 @@ scale_cols = [
 team_df_cols = [
                 ]
 
-chart_labels = {'':'',
-                'Team': 'TEAM', 'TEAM_KP': 'TEAM', 'TEAM_TR': 'TEAM',
+chart_labels = {'Team': 'TEAM', 'TEAM_KP': 'TEAM', 'TEAM_TR': 'TEAM',
                 'Conference': 'CONFERENCE', 'Seed': 'SEED',
                 'Win': 'WIN', 'Loss': 'LOSS',
                 'win-pct-all-games': 'WIN%', 'win-pct-close-games': 'WIN%_CLOSE',
-
-                'points-per-game': 'PTS/GM', 'average-scoring-margin': 'AVG_MARGIN',
-                'effective-field-goal-pct': 'EFG%', 'true-shooting-percentage': 'TS%',
                 'effective-possession-ratio': 'POSS%',
                 'three-point-pct': '3P%', 'two-point-pct': '2P%', 'free-throw-pct': 'FT%',
                 'field-goals-made-per-game': 'FGM/GM', 'field-goals-attempted-per-game': 'FGA/GM',
@@ -129,10 +176,8 @@ chart_labels = {'':'',
                 'total-rebounding-percentage': 'TRB%',
                 'blocks-per-game': 'B/GM', 'steals-per-game': 'S/GM', 'assists-per-game': 'AST/GM',
                 'turnovers-per-game': 'TO/GM',
-                'assist--per--turnover-ratio': 'AST/TO', 'possessions-per-game': 'POSS/GM',
+                'possessions-per-game': 'POSS/GM',
                 'personal-fouls-per-game': 'PF/GM',
-                'opponent-points-per-game': 'OPP_PTS/GM', 'opponent-average-scoring-margin': 'OPP_AVG_MARGIN',
-                'opponent-effective-field-goal-pct': 'OPP_EFG%', 'opponent-true-shooting-percentage': 'OPP_TS%',
                 'opponent-three-point-pct': 'OPP_3P%', 'opponent-two-point-pct': 'OPP_2P%',
                 'opponent-free-throw-pct': 'OPP_FT%', 'opponent-shooting-pct': 'OPP_FG%',
                 'opponent-assists-per-game': 'OPP_AST/GM', 'opponent-turnovers-per-game': 'OPP_TO/GM',
@@ -208,52 +253,430 @@ westconf_logos_list = []
 
 
 ## FILTER DATA ##
-mm_database_2023 = mm_database_2023[viz_cols]
+mm_database_2023 = mm_database_2023[tourney_matchup_cols]
 
-# champion_players = champion_players[champion_players['MP'] > 350] #175
-# lebron_val_players = champion_players[champion_players['YEAR'] >= 2010]
+top_KP100 = mm_database_2023[mm_database_2023['KenPom RANK'] <= 100]
+tourney_2023 = mm_database_2023[mm_database_2023['SEED'] > 0]
+tourney_2023 = tourney_2023[tourney_matchup_cols]
+
+# tourney_2023 = tr_data_hub[tr_data_hub['Season'] > 2016]
+
+# reg_szn_games = tourney_2023[tourney_2023['Reg_MM'] == 0]
+# madness_games = tourney_2023[tourney_2023['Reg_MM'] == 1]
+
+
+# DATAFRAMES
+
+## COPY DATAFRAME ##
+heatmap_tourney_2023 = tourney_2023.copy()
+heatmap_tourney_2023.loc['TOURNEY AVG'] = heatmap_tourney_2023.mean()
+
+
+## HEATMAP DATAFRAMES ##
+heatmap_tourney_2023_T = pd.DataFrame(heatmap_tourney_2023.T)
+# heatmap_tourney_2023_T = pd.DataFrame(heatmap_tourney_2023_T)
+
+
+East_region_2023 = heatmap_tourney_2023_T[['Purdue', 'Marquette', 'Kansas St', 'Tennessee',
+                                           'Duke', 'Kentucky', 'Michigan St', 'Memphis',
+                                           'Fla Atlantic', 'USC', 'Providence', 'Oral Roberts',
+                                           'Lafayette', 'Montana St', 'Vermont', 'F Dickinson',
+                                           'TOURNEY AVG',]]
+
+West_region_2023 = heatmap_tourney_2023_T[['Kansas', 'UCLA', 'Gonzaga', 'Connecticut',
+                                           'St Marys', 'TX Christian', 'Northwestern', 'Arkansas',
+                                           'Illinois', 'Boise State', 'Arizona St', 'VCU',
+                                           'Iona', 'Grd Canyon', 'NC-Asheville', 'Howard',
+                                           'TOURNEY AVG',]]
+
+South_region_2023 = heatmap_tourney_2023_T[['Alabama', 'Arizona', 'Baylor', 'Virginia',
+                                           'San Diego St', 'Creighton', 'Missouri', 'Maryland',
+                                           'W Virginia', 'Utah State', 'NC State', 'Col Charlestn',
+                                           'Furman', 'UCSB', 'Princeton', 'TX A&M-CC',
+                                           'TOURNEY AVG',]]
+
+Midwest_region_2023 = heatmap_tourney_2023_T[['Houston', 'Texas', 'Xavier', 'Indiana',
+                                           'Miami (FL)', 'Iowa State', 'Texas A&M', 'Iowa',
+                                           'Auburn', 'Penn State', 'Pittsburgh', 'Drake',
+                                           'Kent State', 'Kennesaw St', 'Colgate', 'N Kentucky',
+                                           'TOURNEY AVG',]]
+
+East_region = East_region_2023
+West_region = West_region_2023
+South_region = South_region_2023
+Midwest_region = Midwest_region_2023
+
+East_region['EAST AVG'] = East_region_2023.mean(numeric_only=True, axis=1)
+East_region['WEST AVG'] = West_region_2023.mean(numeric_only=True, axis=1)
+East_region['SOUTH AVG'] = South_region_2023.mean(numeric_only=True, axis=1)
+East_region['MIDWEST AVG'] = Midwest_region_2023.mean(numeric_only=True, axis=1)
+
+West_region['WEST AVG'] = West_region_2023.mean(numeric_only=True, axis=1)
+West_region['EAST AVG'] = East_region_2023.mean(numeric_only=True, axis=1)
+West_region['SOUTH AVG'] = South_region_2023.mean(numeric_only=True, axis=1)
+West_region['MIDWEST AVG'] = Midwest_region_2023.mean(numeric_only=True, axis=1)
+
+South_region['SOUTH AVG'] = South_region_2023.mean(numeric_only=True, axis=1)
+South_region['EAST AVG'] = East_region_2023.mean(numeric_only=True, axis=1)
+South_region['WEST AVG'] = West_region_2023.mean(numeric_only=True, axis=1)
+South_region['MIDWEST AVG'] = Midwest_region_2023.mean(numeric_only=True, axis=1)
+
+Midwest_region['MIDWEST AVG'] = Midwest_region_2023.mean(numeric_only=True, axis=1)
+Midwest_region['EAST AVG'] = East_region_2023.mean(numeric_only=True, axis=1)
+Midwest_region['SOUTH AVG'] = South_region_2023.mean(numeric_only=True, axis=1)
+Midwest_region['WEST AVG'] = West_region_2023.mean(numeric_only=True, axis=1)
+
+styler_dict = {"SEED": "Spectral_r", 'KenPom RANK': "Spectral_r", 'NET RANK': "Spectral_r",
+               "WIN": "Spectral", "LOSS": "Spectral_r",
+               'WIN% ALL GM': "Spectral", 'WIN% CLOSE GM': "Spectral",
+               'KenPom EM':"Spectral", 'KenPom SOS EM':"Spectral",
+               'OFF EFF':"Spectral", 'DEF EFF':"Spectral_r",
+               'AVG MARGIN':"Spectral", #'OPP AVG MARGIN':"Spectral_r",
+               'PTS/GM':"Spectral", 'OPP PTS/GM':"Spectral_r",
+               'eFG%':"Spectral", 'OPP eFG%':"Spectral_r",
+               'TS%':"Spectral", 'OPP TS%':"Spectral_r",
+               'AST/TO%':"Spectral", #'NET AST/TOV RATIO',
+               'STOCKS/GM':"Spectral", 'STOCKS-TOV/GM':"Spectral",
+               }
+
+# plot_color_gradients('Diverging',
+#                      ['PiYG', 'PRGn', 'BrBG', 'PuOr', 'RdGy', 'RdBu', 'RdYlBu',
+#                       'Spectral', 'Spectral', 'coolwarm', 'bwr', 'seismic'])
+
+East_region_styler = East_region.style
+West_region_styler = West_region.style
+South_region_styler = South_region.style
+Midwest_region_styler = Midwest_region.style
+for idx, cmap in styler_dict.items():
+    East_region_styler = East_region_styler.background_gradient(cmap=cmap, subset=pd.IndexSlice[idx, :], axis=1)
+    West_region_styler = West_region_styler.background_gradient(cmap=cmap, subset=pd.IndexSlice[idx, :], axis=1)
+    South_region_styler = South_region_styler.background_gradient(cmap=cmap, subset=pd.IndexSlice[idx, :], axis=1)
+    Midwest_region_styler = Midwest_region_styler.background_gradient(cmap=cmap, subset=pd.IndexSlice[idx, :], axis=1)
+
+## HEADERS / INDEX ##
+
+header = {'selector': 'th',
+          'props': [('background-color', '#0360CE'), ('color', 'white'),  # 00008b ##5b9bd5
+                    ('text-align', 'center'), ('vertical-align', 'center'),
+                    ('font-weight', 'bold'),
+                    ('border-bottom', '2px solid #000000'),
+                    ]}
+
+header_level0 = {'selector': 'th.col_heading.level0',
+                 'props': [('font-size', '12px'),
+                           # ('min-width:', '100px'), ('max-width:', '100px'), ('column-width:', '100px'),
+                           ]}
+
+index = {'selector': 'th.row_heading',
+         'props': [('background-color', '#000000'), ('color', 'white'),
+                   ('text-align', 'center'), ('vertical-align', 'center'),
+                   ('font-weight', 'bold'), ('font-size', '12px'),
+                   # ('min-width:', '100px'), ('max-width:', '100px'), ('column-width:', '100px'),
+
+                   ]}
+
+numbers = {'selector': 'td.data',
+           'props': [('text-align', 'center'), ('vertical-align', 'center'),
+                     ('font-weight', 'bold')]}  # ('background-color', '#0360CE'), ('color', 'white')
+
+borders_right = {'selector': '.row_heading.level1', 'props':
+    [('border-right', '1px solid #FFFFFF')]}
+
+## ROWS ##
+
+top_row = {'selector': 'td.data.row0',
+           # [('background-color', '#000000'), ('color', 'white'),
+           'props': [('border-bottom', '2px dashed #000000'),
+                     ('text-align', 'center'), ('font-weight', 'bold'), ('font-size', '12px')], }
+
+table_row0 = {'selector': '.row0',
+              'props': [('border-bottom', '2px dashed #000000'),
+                        ('text-align', 'center'), ('font-weight', 'bold'),
+                        ('font-size', '12px')]}  # ('border-top', '1px solid #000000')
+
+table_row1 = {'selector': '.row1',
+              'props': [('text-align', 'center'), ('font-weight', 'bold'), ('font-size', '12px')]}
+
+table_row2 = {'selector': '.row2',  # 'selector': '.row_heading.level0.row1'
+              'props': [('border-bottom', '2px dashed #000000'),
+                        ('text-align', 'center'), ('font-weight', 'bold'), ('font-size', '12px')]}
+
+table_row3 = {'selector': '.row3',
+              'props': [('text-align', 'center'), ('font-weight', 'bold'), ('font-size', '12px')]}
+
+table_row4 = {'selector': '.row4',
+              'props': [('border-bottom', '2px dashed #000000'),
+                        ('text-align', 'center'), ('font-weight', 'bold'), ('font-size', '12px')]}
+
+table_row5 = {'selector': '.row5',
+              'props': [('text-align', 'center'), ('font-weight', 'bold'), ('font-size', '12px')]}
+
+table_row6 = {'selector': '.row6',
+              'props': [('border-bottom', '2px dashed #000000'),
+                        ('text-align', 'center'), ('font-weight', 'bold'), ('font-size', '12px')]}
+
+table_row7 = {'selector': '.row7',
+              'props': [('text-align', 'center'), ('font-weight', 'bold'), ('font-size', '12px')]}
+
+table_row8 = {'selector': '.row8',
+              'props': [('border-bottom', '2px dashed #000000'),
+                        ('text-align', 'center'), ('font-weight', 'bold'), ('font-size', '12px')]}
+
+table_row9 = {'selector': '.row9',
+              'props': [('text-align', 'center'), ('font-weight', 'bold'), ('font-size', '12px')]}
+
+table_row10 = {'selector': '.row10',
+               'props': [('border-bottom', '2px dashed #000000'),
+                         ('text-align', 'center'), ('font-weight', 'bold'), ('font-size', '12px')]}
+
+table_row11 = {'selector': '.row11',
+               'props': [('border-bottom', '2px dashed #000000'),
+                         ('text-align', 'center'), ('font-weight', 'bold'), ('font-size', '12px')]}
+
+table_row12 = {'selector': '.row12',
+               'props': [('text-align', 'center'), ('font-weight', 'bold'), ('font-size', '12px')]}
+
+table_row13 = {'selector': '.row13',
+               'props': [('border-bottom', '2px dashed #000000'),
+                         ('text-align', 'center'), ('font-weight', 'bold'), ('font-size', '12px')]}
+
+table_row14 = {'selector': '.row14',
+               'props': [('text-align', 'center'), ('font-weight', 'bold'), ('font-size', '12px')]}
+
+table_row15 = {'selector': '.row15',
+               'props': [('border-bottom', '2px dashed #000000'),
+                         ('text-align', 'center'), ('font-weight', 'bold'), ('font-size', '12px')]}
+
+table_row16 = {'selector': '.row16',
+               'props': [('text-align', 'center'), ('font-weight', 'bold'), ('font-size', '12px')]}
+
+table_row17 = {'selector': '.row17',
+               'props': [('border-bottom', '2px dashed #000000'),
+                         ('text-align', 'center'), ('font-weight', 'bold'), ('font-size', '12px')]}
+
+table_row18 = {'selector': '.row18',
+               'props': [('border-bottom', '2px dashed #000000'),
+                         ('text-align', 'center'), ('font-weight', 'bold'), ('font-size', '12px')]}
+
+table_row19 = {'selector': '.row19',
+               'props': [('text-align', 'center'), ('font-weight', 'bold'), ('font-size', '12px')]}
+
+table_row20 = {'selector': '.row20',
+               'props': [('text-align', 'center'), ('font-weight', 'bold'), ('font-size', '12px')]}
+
+table_row21 = {'selector': '.row21',
+               'props': [('text-align', 'center'), ('font-weight', 'bold'), ('font-size', '12px')]}
+
+## COLUMNS ##
+
+table_col0 = {'selector': '.row0',
+              'props': [('border-left', '3px solid #000000'),
+                        ('min-width:', '100px'), ('max-width:', '100px'), ('column-width:', '100px'), ]}
+
+table_col1 = {'selector': '.col1',
+              'props': [('border-left', '2px dashed #000000')]}
+
+table_col2 = {'selector': '.col2',  # 'selector': '.row_heading.level0.row1'
+              'props': [('border-left', '2px dashed #000000')]}
+
+table_col3 = {'selector': '.col3',
+              'props': [('border-left', '2px dashed #000000')]}
+
+table_col4 = {'selector': '.col4',
+              'props': [('border-left', '2px dashed #000000')]}
+
+table_col5 = {'selector': '.col5',
+              'props': [('border-left', '2px dashed #000000')]}
+
+table_col6 = {'selector': '.col6',
+              'props': [('border-left', '2px dashed #000000')]}
+
+table_col7 = {'selector': '.col7',
+              'props': [('border-left', '2px dashed #000000')]}
+
+table_col8 = {'selector': '.col8',
+              'props': [('border-left', '2px dashed #000000')]}
+
+table_col9 = {'selector': '.col9',
+              'props': [('border-left', '2px dashed #000000')]}
+
+table_col10 = {'selector': '.col10',
+               'props': [('border-left', '2px dashed #000000')]}
+
+table_col11 = {'selector': '.col11',
+               'props': [('border-left', '2px dashed #000000')]}
+
+table_col12 = {'selector': '.col12',
+               'props': [('border-left', '2px dashed #000000')]}
+
+table_col13 = {'selector': '.col13',
+               'props': [('border-left', '2px dashed #000000')]}
+
+table_col14 = {'selector': '.col14',
+               'props': [('border-left', '2px dashed #000000')]}
+
+table_col15 = {'selector': '.col15',
+               'props': [('border-left', '2px dashed #000000')]}
+
+table_col16 = {'selector': '.col16',
+               'props': [('border-left', '3px solid #000000')]}
+
+table_col17 = {'selector': '.col17',
+               'props': [('border-left', '2px dashed #000000')]}
+
+table_col18 = {'selector': '.col18',
+               'props': [('border-left', '2px dashed #000000')]}
+
+table_col19 = {'selector': '.col19',
+               'props': [('border-left', '2px dashed #000000')]}
+
+table_col20 = {'selector': '.col20',
+               'props': [('border-left', '2px dashed #000000')]}
+
+table_col21 = {'selector': '.col21',
+               'props': [('border-left', '2px dashed #000000')]}
+
+# apply styles
+# table = table.style.set_table_styles([header, header_level0, index, top_row, borders_bottom1, borders_bottom2, borders_bottom3, borders_bottom4, borders_bottom5, borders_right])
+
+
+## REGION DATAFRAMES ##
+## EAST REGION ##
+East_region_styler.format('{:.2f}', na_rep='NA').set_table_styles([header, header_level0, index, top_row,
+                                                                   numbers, borders_right,
+                                                                   table_row1, table_row2, table_row3,
+                                                                   table_row4, table_row5, table_row6,
+                                                                   table_row7, table_row8, table_row9,
+                                                                   table_row10, table_row11, table_row12,
+                                                                   table_row13, table_row14, table_row15,
+                                                                   table_row16, table_row17, table_row18,
+                                                                   table_row19, table_row20, table_row21,
+                                                                   table_col1, table_col2, table_col3,
+                                                                   table_col4, table_col5, table_col6,
+                                                                   table_col7, table_col8, table_col9,
+                                                                   table_col10, table_col11, table_col12,
+                                                                   table_col13, table_col14, table_col15,
+                                                                   table_col16, table_col17, table_col18,
+                                                                   table_col19, table_col20, table_col21,
+
+                                                                   ]).set_properties(**{'min-width': '55px'},
+                                                                                     **{'max-width': '55px'},
+                                                                                     **{'column-width': '55px'},
+                                                                                     **{'width': '55px'}, )
+
+## WEST REGION ##
+West_region_styler.format('{:.2f}', na_rep='NA').set_table_styles([header, header_level0, index, top_row,
+                                                                   numbers, borders_right,
+                                                                   table_row1, table_row2, table_row3,
+                                                                   table_row4, table_row5, table_row6,
+                                                                   table_row7, table_row8, table_row9,
+                                                                   table_row10, table_row11, table_row12,
+                                                                   table_row13, table_row14, table_row15,
+                                                                   table_row16, table_row17, table_row18,
+                                                                   table_row19, table_row20, table_row21,
+                                                                   table_col1, table_col2, table_col3,
+                                                                   table_col4, table_col5, table_col6,
+                                                                   table_col7, table_col8, table_col9,
+                                                                   table_col10, table_col11, table_col12,
+                                                                   table_col13, table_col14, table_col15,
+                                                                   table_col16, table_col17, table_col18,
+                                                                   table_col19, table_col20, table_col21,
+
+                                                                   ]).set_properties(**{'min-width': '55px'},
+                                                                                     **{'max-width': '55px'},
+                                                                                     **{'column-width': '55px'},
+                                                                                     **{'width': '55px'}, )  # , subset=[0,1]
+
+## SOUTH REGION ##
+South_region_styler.format('{:.2f}', na_rep='NA').set_table_styles([header, header_level0, index, top_row,
+                                                                    numbers, borders_right,
+                                                                    table_row1, table_row2, table_row3,
+                                                                    table_row4, table_row5, table_row6,
+                                                                    table_row7, table_row8, table_row9,
+                                                                    table_row10, table_row11, table_row12,
+                                                                    table_row13, table_row14, table_row15,
+                                                                    table_row16, table_row17, table_row18,
+                                                                    table_row19, table_row20, table_row21,
+                                                                    table_col1, table_col2, table_col3,
+                                                                    table_col4, table_col5, table_col6,
+                                                                    table_col7, table_col8, table_col9,
+                                                                    table_col10, table_col11, table_col12,
+                                                                    table_col13, table_col14, table_col15,
+                                                                    table_col16, table_col17, table_col18,
+                                                                    table_col19, table_col20, table_col21,
+
+                                                                    ]).set_properties(**{'min-width': '55px'},
+                                                                                      **{'max-width': '55px'},
+                                                                                      **{'column-width': '55px'},
+                                                                                      **{ 'width': '55px'}, )  # , subset=[0,1]
+
+## MIDWEST REGION ##
+
+Midwest_region_styler.format('{:.2f}', na_rep='NA').set_table_styles([header, header_level0, index, top_row,
+                                                                      numbers, borders_right,
+                                                                      table_row1, table_row2, table_row3,
+                                                                      table_row4, table_row5, table_row6,
+                                                                      table_row7, table_row8, table_row9,
+                                                                      table_row10, table_row11, table_row12,
+                                                                      table_row13, table_row14, table_row15,
+                                                                      table_row16, table_row17, table_row18,
+                                                                      table_row19, table_row20, table_row21,
+                                                                      table_col1, table_col2, table_col3,
+                                                                      table_col4, table_col5, table_col6,
+                                                                      table_col7, table_col8, table_col9,
+                                                                      table_col10, table_col11, table_col12,
+                                                                      table_col13, table_col14, table_col15,
+                                                                      table_col16, table_col17, table_col18,
+                                                                      table_col19, table_col20, table_col21,
+
+                                                                      ]).set_properties(**{'min-width': '55px'},
+                                                                                        **{'max-width': '55px'},
+                                                                                        **{'column-width': '55px'},
+                                                                                        **{'width': '55px'}, )  # , subset=[0,1]
+
+## FILL BARS ##
+# df.style.bar(subset = ["D"],
+#              align = "mid",
+#              color = ["salmon", "lightgreen"])\
+#         .set_properties(**{'border': '0.5px solid black'})
 
 
 ## TO DO / NOTES
+## TABLEAU ## NEO4J ## MONGODB ##
+## PAGES OR TABS FOR EACH ROSTER (???) ##
+## AGG GRID ##
+    # grid = AgGrid(df)
 
-#**#value per dollar is the key AKA secret sauce *** #
-#DK PTS/MIN
-## TABLEAU ##
-## NEO4J / MONGO ?? ##
-## PAGES OR TABS FOR EACH ROSTER???
-## LOG TRANSFORM??
-## PCA From test code
+## SCALING ##
+    # ss = StandardScaler()
+    # mms = MinMaxScaler()
 
-
-
-# MinMaxScaler
-
-# ss = StandardScaler()
-# mms = MinMaxScaler()
-
-# scaled_MP = ss.fit_transform(champion_players['MP'])
-# scaled_MP = scaled_MP.reshape(-1,1)
-# champion_players['ss_MP'] = scaled_MP
-# print(champion_players['ss_MP'])
+    # scaled_MP = ss.fit_transform(champion_players['MP'])
+    # scaled_MP = scaled_MP.reshape(-1,1)
+    # champion_players['ss_MP'] = scaled_MP
+    # print(champion_players['ss_MP'])
 
 
 ## GROUP BY CHAMPIONSHIP TEAM
 
 # champion_teams = champion_players[team_df_cols]
 
-champ_df_list = [
-                 ]
+# champ_df_list = [
+#                  ]
+#
+# for df in champ_df_list:
+#   df = df.drop(columns=['CHAMP', 'PLAYER'], inplace=True)
 
-for df in champ_df_list:
-  df = df.drop(columns=['CHAMP', 'PLAYER'], inplace=True)
 
-#%%
-## AGG GRID
-# grid = AgGrid(df)
+
 
 
 #%%
 ## VISUALIZATIONS ##
+
+
+
+
 
 ####################################################################################################################
 
@@ -261,255 +684,255 @@ for df in champ_df_list:
 
 ####################################################################################################################
 
-## BAR CHARTS ##
-bar_usg_salary = px.bar(data_frame=champion_players,
-                              x=champion_players['CHAMP'],
-                              y=champion_players['SALARY'],
-                              color=champion_players['USG%'],     # EXPERIENCE AGE MP APE
-                              color_continuous_scale=Tropic,
-                              color_discrete_sequence=Tropic,
-                              # color_continuous_midpoint=10,
-                              # color_discrete_map=team_logos_dict,
-                              hover_name=champion_players['PLAYER'],
-                              hover_data=champion_players[['CHAMP', 'SALARY', 'MP']], #'WS/$',
-                              barmode='group',
-                              title='USG% RELATIVE TO TEAM SALARY',
-                              labels=chart_labels,
-                              # template='simple_white+gridon',
-                              # range_x=[1991,2023],
-                              # range_y=[0,200000000],
-                              height=750,
-                            # category_orders={"InternetService": ["DSL", "Fiber optic", "No"],
-#                               "gender": ["Female", "Male"]})
-                              )
-
-bar_WS_salary = px.bar(data_frame=champion_players,
-                              x=champion_players['CHAMP'],
-                              y=champion_players['SALARY'],
-                              color=champion_players['WS'],     # EXPERIENCE AGE MP APE
-                              color_continuous_scale=Tropic,
-                              color_discrete_sequence=Tropic,
-                              color_continuous_midpoint=10,
-                              # color_discrete_map=team_logos_dict,
-                              hover_name=champion_players['PLAYER'],
-                              hover_data=champion_players[['CHAMP', 'SALARY', 'MP', 'WS']], #'WS/$',
-                              barmode='group',
-                              title='WIN SHARES (WS) METRIC RELATIVE TO CHAMPIONSHIP TEAM SALARY',
-                              labels=chart_labels,
-                              # template='simple_white+gridon',
-                              # range_x=[1991,2023],
-                              # range_y=[0,200000000],
-                              height=750,
-                              # width=1000,
-                              )
-
-bar_raptor_salary = px.bar(data_frame=champion_players,
-                              x=champion_players['CHAMP'],
-                              y=champion_players['SALARY'],
-                              color=champion_players['RAPTOR'],     # EXPERIENCE AGE MP APE
-                              color_continuous_scale=Tropic,
-                              color_discrete_sequence=Tropic,
-                              color_continuous_midpoint=0,
-                              # color_discrete_map=team_logos_dict,
-                              hover_name=champion_players['PLAYER'],
-                              hover_data=champion_players[['CHAMP', 'SALARY', 'MP', 'RAPTOR']],
-                              barmode='group',
-                              title='RAPTOR METRIC RELATIVE TO CHAMPIONSHIP TEAM SALARY',
-                              labels=chart_labels,
-                              # template='simple_white+gridon',
-                              # range_x=[1991,2022],
-                              # range_y=[0,200000000],
-                              height=750,
-                              # width=1000,
-                              )
-
-bar_lebron_salary = px.bar(data_frame=lebron_val_players,
-                              x=lebron_val_players['CHAMP'],
-                              y=lebron_val_players['SALARY'],
-                              color=lebron_val_players['LEBRON'],     # EXPERIENCE AGE MP APE
-                              color_continuous_scale=Tropic,
-                              color_discrete_sequence=Tropic,
-                              # color_continuous_midpoint=10,
-                              # color_discrete_map=team_logos_dict,
-                              hover_name=lebron_val_players['PLAYER'],
-                              hover_data=lebron_val_players[['CHAMP', 'SALARY', 'MP', 'LEBRON']],
-                              barmode='group',
-                              title='LEBRON METRIC RELATIVE TO CHAMPIONSHIP TEAM SALARY',
-                              labels=chart_labels,
-                              # template='simple_white+gridon',
-                              # range_x=[1991,2022],
-                              # range_y=[0,200000000],
-                              height=750,
-                              # width=1000,
-                              )
-
-bar_eWINS_WS = px.bar(data_frame=champion_players,
-                              x=champion_players['CHAMP'],
-                              y=champion_players['SALARY'],
-                              color=champion_players['$MM/PlrWS'],     # EXPERIENCE AGE MP APE
-                              color_continuous_scale=Tropic,
-                              color_discrete_sequence=Tropic,
-                              # color_continuous_midpoint=10,
-                              # color_discrete_map=team_logos_dict,
-                              hover_name=champion_players['PLAYER'],
-                              hover_data=champion_players[['CHAMP', 'SALARY', 'MP']], #'WS/$',
-                              barmode='group',
-                              title='$MM / PLAYER WS RELATIVE TO TEAM SALARY',
-                              labels=chart_labels,
-                              # template='simple_white+gridon',
-                              # range_x=[1991,2023],
-                              # range_y=[0,200000000],
-                              height=750,
-                            # category_orders={"InternetService": ["DSL", "Fiber optic", "No"],
-#                               "gender": ["Female", "Male"]})
-                              )
-
-
-
-####################################################################################################################
-
-## SCATTER MATRIX ##
-scatter_matrix_metrics = px.scatter_matrix(champion_players,
-                                         dimensions=['USG%', 'TS%', 'AST%/TO%', 'STOCK%', 'RAPTOR', 'LEBRON', 'WS', ],
-                                         color=champion_players['WTD POS'],
-                                         color_continuous_scale=Dense,
-                                         color_discrete_sequence=Dense,
-                                           # symbol=champion_players['TEAM'],
-                                           # # symbol_sequence=team_logos_dict,
-                                           # symbol_map=team_logos_dict,
-                                         # color_discrete_map=team_logos_dict,
-                                         hover_name=champion_players['PLAYER'],
-                                         hover_data=champion_players[['MP', 'CHAMP']],
-                                         title='PLAYER PERFORMANCE BY CHAMPIONSHIP TEAM',
-                                         labels=chart_labels,
-                                         # custom_data= [league_logo_list],
-                                         height=800,
-                                         # width=800,
-                                         )
-
-scatter_matrix_measurables = px.scatter_matrix(champion_players,
-                                         dimensions=['BMI', 'APE', 'WS', 'RAPTOR', 'LEBRON'],
-                                         color=champion_players['WTD POS'],
-                                         color_continuous_scale=Dense,
-                                         color_discrete_sequence=Dense,
-                                         # color_discrete_map=team_logos_dict,
-                                         hover_name=champion_players['PLAYER'],
-                                         hover_data=champion_players[['MP', 'CHAMP']],
-                                         title='PLAYER PERFORMANCE BY CHAMPIONSHIP TEAM',
-                                         labels=chart_labels,
-                                         # custom_data= [league_logo_list],
-                                         height=800,
-                                         # width=800,
-                                         )
-
-
-####################################################################################################################
-
-## SCATTER TERNARY ##
-
-scatter_ternary_stl_blk_ast_to = px.scatter_ternary(data_frame=champion_players,
-                                       a=champion_players['STL%'],
-                                       b=champion_players['BLK%'],
-                                       c=champion_players['AST%/TO%'],
-                                       color=champion_players['WTD POS'],
-                                        color_discrete_sequence=Dense,
-                                       color_continuous_scale=Dense,
-                                        color_continuous_midpoint=3,
-                                       # symbol=champion_players['TEAM'], #'RD POS'
-                                       #              symbol_map=team_logos_dict,
-                                       size=champion_players['TS%'],
-                                       size_max=20,
-                                       opacity=.8,
-                                       title='NBA CHAMPIONS -- STL% - BLK% - AST%/TO%',
-                                       hover_name=champion_players['PLAYER'],
-                                       hover_data=champion_players[['CHAMP', 'SALARY', 'MP',]],
-                                       labels=chart_labels,
-                                       height=900,
-                                       )
-
-scatter_ternary_ast_to_usg = px.scatter_ternary(data_frame=champion_players,
-                                       a=champion_players['AST%'],
-                                       b=champion_players['TO%'],
-                                       c=champion_players['USG%'],
-                                       color=champion_players['WTD POS'],
-                                                color_discrete_sequence=Dense,
-                                                color_continuous_scale=Dense,
-                                                color_continuous_midpoint=3,
-                                                symbol=champion_players['RD POS'],
-                                                size=champion_players['TS%'],
-                                                size_max=20,
-                                       opacity=.8,
-                                       title='NBA CHAMPIONS -- TS% - USG% - STOCK%',
-                                       hover_name=champion_players['PLAYER'],
-                                       hover_data=champion_players[['CHAMP', 'SALARY', 'MP', 'STL%', 'BLK%']],
-                                       labels=chart_labels,
-                                       height=900,
-                                       )
-
-
-####################################################################################################################
-
-## SCATTER 3D ##
-
-scatter_3D_to_ast_usg = px.scatter_3d(data_frame=champion_players,
-                                     x=champion_players['TO%'],
-                                     y=champion_players['AST%'],
-                                     z=champion_players['USG%'],
-                                     color=champion_players['WTD POS'],
-                                      symbol=champion_players['RD POS'],
-                                     color_discrete_sequence=Dense,
-                                     color_continuous_scale=Dense,
-                                     color_continuous_midpoint=3,
-                                     title='NBA CHAMPIONS -- TO% / AST% / USG% BY POSITION',
-                                     hover_name=champion_players['PLAYER'],
-                                     hover_data=champion_players[['CHAMP']], #'LOGO'
-                                     # 'HEIGHT (IN)' 'WEIGHT (LBS)' 'BMI' 'W-SPAN (IN)'
-                                     # custom_data=['LOGO'],
-                                     # size=champion_players['WS'],
-                                     # size_max=50,
-                                     labels=chart_labels,
-                                     # range_x=[0,360],
-                                     # range_y=[-50,50],
-                                     # range_z=[0,2500],
-                                     # range_color=Sunsetdark,
-                                     opacity=.8,
-                                     height=1000,
-                                     # width=1000,
-                                     )
-
-#%%
-
-## HISTORICAL LINE CHARTS
-box_eWINS_WS = px.bar(data_frame=champion_players,
-                              x=champion_players['CHAMP'],
-                              y=champion_players['$MM/eWIN'], #, '$MM/TmWIN']
-                              color=champion_players['WTD POS'],     # EXPERIENCE AGE MP APE
-                              color_discrete_sequence=Tropic,
-                      color_continuous_scale=Dense,
-                              # color_continuous_midpoint=10,
-                              # color_discrete_map=team_logos_dict,
-                              hover_name=champion_players['PLAYER'],
-                              hover_data=champion_players[['CHAMP',]], #'WS/$',
-                              title='$MM / PLAYER WS RELATIVE TO TEAM SALARY',
-                              labels=chart_labels,
-                              # template='simple_white+gridon',
-                              # range_x=[1991,2023],
-                              # range_y=[0,200000000],
-                              height=750,
-                            # category_orders={"InternetService": ["DSL", "Fiber optic", "No"],
-#                               "gender": ["Female", "Male"]})
-                              )
+# ## BAR CHARTS ##
+# bar_usg_salary = px.bar(data_frame=champion_players,
+#                               x=champion_players['CHAMP'],
+#                               y=champion_players['SALARY'],
+#                               color=champion_players['USG%'],     # EXPERIENCE AGE MP APE
+#                               color_continuous_scale=Tropic,
+#                               color_discrete_sequence=Tropic,
+#                               # color_continuous_midpoint=10,
+#                               # color_discrete_map=team_logos_dict,
+#                               hover_name=champion_players['PLAYER'],
+#                               hover_data=champion_players[['CHAMP', 'SALARY', 'MP']], #'WS/$',
+#                               barmode='group',
+#                               title='USG% RELATIVE TO TEAM SALARY',
+#                               labels=chart_labels,
+#                               # template='simple_white+gridon',
+#                               # range_x=[1991,2023],
+#                               # range_y=[0,200000000],
+#                               height=750,
+#                             # category_orders={"InternetService": ["DSL", "Fiber optic", "No"],
+# #                               "gender": ["Female", "Male"]})
+#                               )
+#
+# bar_WS_salary = px.bar(data_frame=champion_players,
+#                               x=champion_players['CHAMP'],
+#                               y=champion_players['SALARY'],
+#                               color=champion_players['WS'],     # EXPERIENCE AGE MP APE
+#                               color_continuous_scale=Tropic,
+#                               color_discrete_sequence=Tropic,
+#                               color_continuous_midpoint=10,
+#                               # color_discrete_map=team_logos_dict,
+#                               hover_name=champion_players['PLAYER'],
+#                               hover_data=champion_players[['CHAMP', 'SALARY', 'MP', 'WS']], #'WS/$',
+#                               barmode='group',
+#                               title='WIN SHARES (WS) METRIC RELATIVE TO CHAMPIONSHIP TEAM SALARY',
+#                               labels=chart_labels,
+#                               # template='simple_white+gridon',
+#                               # range_x=[1991,2023],
+#                               # range_y=[0,200000000],
+#                               height=750,
+#                               # width=1000,
+#                               )
+#
+# bar_raptor_salary = px.bar(data_frame=champion_players,
+#                               x=champion_players['CHAMP'],
+#                               y=champion_players['SALARY'],
+#                               color=champion_players['RAPTOR'],     # EXPERIENCE AGE MP APE
+#                               color_continuous_scale=Tropic,
+#                               color_discrete_sequence=Tropic,
+#                               color_continuous_midpoint=0,
+#                               # color_discrete_map=team_logos_dict,
+#                               hover_name=champion_players['PLAYER'],
+#                               hover_data=champion_players[['CHAMP', 'SALARY', 'MP', 'RAPTOR']],
+#                               barmode='group',
+#                               title='RAPTOR METRIC RELATIVE TO CHAMPIONSHIP TEAM SALARY',
+#                               labels=chart_labels,
+#                               # template='simple_white+gridon',
+#                               # range_x=[1991,2022],
+#                               # range_y=[0,200000000],
+#                               height=750,
+#                               # width=1000,
+#                               )
+#
+# bar_lebron_salary = px.bar(data_frame=lebron_val_players,
+#                               x=lebron_val_players['CHAMP'],
+#                               y=lebron_val_players['SALARY'],
+#                               color=lebron_val_players['LEBRON'],     # EXPERIENCE AGE MP APE
+#                               color_continuous_scale=Tropic,
+#                               color_discrete_sequence=Tropic,
+#                               # color_continuous_midpoint=10,
+#                               # color_discrete_map=team_logos_dict,
+#                               hover_name=lebron_val_players['PLAYER'],
+#                               hover_data=lebron_val_players[['CHAMP', 'SALARY', 'MP', 'LEBRON']],
+#                               barmode='group',
+#                               title='LEBRON METRIC RELATIVE TO CHAMPIONSHIP TEAM SALARY',
+#                               labels=chart_labels,
+#                               # template='simple_white+gridon',
+#                               # range_x=[1991,2022],
+#                               # range_y=[0,200000000],
+#                               height=750,
+#                               # width=1000,
+#                               )
+#
+# bar_eWINS_WS = px.bar(data_frame=champion_players,
+#                               x=champion_players['CHAMP'],
+#                               y=champion_players['SALARY'],
+#                               color=champion_players['$MM/PlrWS'],     # EXPERIENCE AGE MP APE
+#                               color_continuous_scale=Tropic,
+#                               color_discrete_sequence=Tropic,
+#                               # color_continuous_midpoint=10,
+#                               # color_discrete_map=team_logos_dict,
+#                               hover_name=champion_players['PLAYER'],
+#                               hover_data=champion_players[['CHAMP', 'SALARY', 'MP']], #'WS/$',
+#                               barmode='group',
+#                               title='$MM / PLAYER WS RELATIVE TO TEAM SALARY',
+#                               labels=chart_labels,
+#                               # template='simple_white+gridon',
+#                               # range_x=[1991,2023],
+#                               # range_y=[0,200000000],
+#                               height=750,
+#                             # category_orders={"InternetService": ["DSL", "Fiber optic", "No"],
+# #                               "gender": ["Female", "Male"]})
+#                               )
+#
+#
+#
+# ####################################################################################################################
+#
+# ## SCATTER MATRIX ##
+# scatter_matrix_metrics = px.scatter_matrix(champion_players,
+#                                          dimensions=['USG%', 'TS%', 'AST%/TO%', 'STOCK%', 'RAPTOR', 'LEBRON', 'WS', ],
+#                                          color=champion_players['WTD POS'],
+#                                          color_continuous_scale=Dense,
+#                                          color_discrete_sequence=Dense,
+#                                            # symbol=champion_players['TEAM'],
+#                                            # # symbol_sequence=team_logos_dict,
+#                                            # symbol_map=team_logos_dict,
+#                                          # color_discrete_map=team_logos_dict,
+#                                          hover_name=champion_players['PLAYER'],
+#                                          hover_data=champion_players[['MP', 'CHAMP']],
+#                                          title='PLAYER PERFORMANCE BY CHAMPIONSHIP TEAM',
+#                                          labels=chart_labels,
+#                                          # custom_data= [league_logo_list],
+#                                          height=800,
+#                                          # width=800,
+#                                          )
+#
+# scatter_matrix_measurables = px.scatter_matrix(champion_players,
+#                                          dimensions=['BMI', 'APE', 'WS', 'RAPTOR', 'LEBRON'],
+#                                          color=champion_players['WTD POS'],
+#                                          color_continuous_scale=Dense,
+#                                          color_discrete_sequence=Dense,
+#                                          # color_discrete_map=team_logos_dict,
+#                                          hover_name=champion_players['PLAYER'],
+#                                          hover_data=champion_players[['MP', 'CHAMP']],
+#                                          title='PLAYER PERFORMANCE BY CHAMPIONSHIP TEAM',
+#                                          labels=chart_labels,
+#                                          # custom_data= [league_logo_list],
+#                                          height=800,
+#                                          # width=800,
+#                                          )
+#
+#
+# ####################################################################################################################
+#
+# ## SCATTER TERNARY ##
+#
+# scatter_ternary_stl_blk_ast_to = px.scatter_ternary(data_frame=champion_players,
+#                                        a=champion_players['STL%'],
+#                                        b=champion_players['BLK%'],
+#                                        c=champion_players['AST%/TO%'],
+#                                        color=champion_players['WTD POS'],
+#                                         color_discrete_sequence=Dense,
+#                                        color_continuous_scale=Dense,
+#                                         color_continuous_midpoint=3,
+#                                        # symbol=champion_players['TEAM'], #'RD POS'
+#                                        #              symbol_map=team_logos_dict,
+#                                        size=champion_players['TS%'],
+#                                        size_max=20,
+#                                        opacity=.8,
+#                                        title='NBA CHAMPIONS -- STL% - BLK% - AST%/TO%',
+#                                        hover_name=champion_players['PLAYER'],
+#                                        hover_data=champion_players[['CHAMP', 'SALARY', 'MP',]],
+#                                        labels=chart_labels,
+#                                        height=900,
+#                                        )
+#
+# scatter_ternary_ast_to_usg = px.scatter_ternary(data_frame=champion_players,
+#                                        a=champion_players['AST%'],
+#                                        b=champion_players['TO%'],
+#                                        c=champion_players['USG%'],
+#                                        color=champion_players['WTD POS'],
+#                                                 color_discrete_sequence=Dense,
+#                                                 color_continuous_scale=Dense,
+#                                                 color_continuous_midpoint=3,
+#                                                 symbol=champion_players['RD POS'],
+#                                                 size=champion_players['TS%'],
+#                                                 size_max=20,
+#                                        opacity=.8,
+#                                        title='NBA CHAMPIONS -- TS% - USG% - STOCK%',
+#                                        hover_name=champion_players['PLAYER'],
+#                                        hover_data=champion_players[['CHAMP', 'SALARY', 'MP', 'STL%', 'BLK%']],
+#                                        labels=chart_labels,
+#                                        height=900,
+#                                        )
+#
+#
+# ####################################################################################################################
+#
+# ## SCATTER 3D ##
+#
+# scatter_3D_to_ast_usg = px.scatter_3d(data_frame=champion_players,
+#                                      x=champion_players['TO%'],
+#                                      y=champion_players['AST%'],
+#                                      z=champion_players['USG%'],
+#                                      color=champion_players['WTD POS'],
+#                                       symbol=champion_players['RD POS'],
+#                                      color_discrete_sequence=Dense,
+#                                      color_continuous_scale=Dense,
+#                                      color_continuous_midpoint=3,
+#                                      title='NBA CHAMPIONS -- TO% / AST% / USG% BY POSITION',
+#                                      hover_name=champion_players['PLAYER'],
+#                                      hover_data=champion_players[['CHAMP']], #'LOGO'
+#                                      # 'HEIGHT (IN)' 'WEIGHT (LBS)' 'BMI' 'W-SPAN (IN)'
+#                                      # custom_data=['LOGO'],
+#                                      # size=champion_players['WS'],
+#                                      # size_max=50,
+#                                      labels=chart_labels,
+#                                      # range_x=[0,360],
+#                                      # range_y=[-50,50],
+#                                      # range_z=[0,2500],
+#                                      # range_color=Sunsetdark,
+#                                      opacity=.8,
+#                                      height=1000,
+#                                      # width=1000,
+#                                      )
+#
+# #%%
+#
+# ## HISTORICAL LINE CHARTS
+# box_eWINS_WS = px.bar(data_frame=champion_players,
+#                               x=champion_players['CHAMP'],
+#                               y=champion_players['$MM/eWIN'], #, '$MM/TmWIN']
+#                               color=champion_players['WTD POS'],     # EXPERIENCE AGE MP APE
+#                               color_discrete_sequence=Tropic,
+#                       color_continuous_scale=Dense,
+#                               # color_continuous_midpoint=10,
+#                               # color_discrete_map=team_logos_dict,
+#                               hover_name=champion_players['PLAYER'],
+#                               hover_data=champion_players[['CHAMP',]], #'WS/$',
+#                               title='$MM / PLAYER WS RELATIVE TO TEAM SALARY',
+#                               labels=chart_labels,
+#                               # template='simple_white+gridon',
+#                               # range_x=[1991,2023],
+#                               # range_y=[0,200000000],
+#                               height=750,
+#                             # category_orders={"InternetService": ["DSL", "Fiber optic", "No"],
+# #                               "gender": ["Female", "Male"]})
+#                               )
 
 #%%
 
 ####################################################################################################################
 ## TRACE LINES ##
 
-line_NBA_salary = go.Scatter(x=champion_players['CHAMP'], y=champion_players['NBA TM AVG SAL'],
-                             line_color='#000000', mode='lines')
-
-line_NBA_eWIN = go.Scatter(x=champion_players['CHAMP'], y=champion_players['$MM/eWIN'],
-                             line_color='#000000', mode='lines')
+# line_NBA_salary = go.Scatter(x=champion_players['CHAMP'], y=champion_players['NBA TM AVG SAL'],
+#                              line_color='#000000', mode='lines')
+#
+# line_NBA_eWIN = go.Scatter(x=champion_players['CHAMP'], y=champion_players['$MM/eWIN'],
+#                              line_color='#000000', mode='lines')
 
 ####################################################################################################################
 
@@ -540,7 +963,7 @@ line_NBA_eWIN = go.Scatter(x=champion_players['CHAMP'], y=champion_players['$MM/
 #####################
 
 ## CONFIGURATION ##
-st.set_page_config(page_title='COMPOSITION OF NBA CHAMPIONS', layout='wide', initial_sidebar_state='auto') #, page_icon=":smirk:"
+st.set_page_config(page_title='NCAA BASKETBALL -- MARCH MADNESS 2023', layout='wide', initial_sidebar_state='auto') #, page_icon=":smirk:"
 
 hide_menu_style = """
         <style>
@@ -610,55 +1033,65 @@ col_format_dict = {
 ## HEADER ##
 st.container()
 
-st.title('CHAMPIONSHIP-CALIBER NBA ROSTER CONSTRUCTION')
-st.write('*STATISTICAL BREAKDOWN OF HISTORICAL AND MODERN-DAY NBA CHAMPIONSHIP ROSTERS*')
+st.title('NCAA BASKETBALL -- MARCH MADNESS 2023')
+st.write('*STATISTICAL BREAKDOWN OF CURRENT + HISTORICAL MARCH MADNESS TEAMS*')
 
 ## EAST LOGOS ##
 MM_col_0, MM_col_1, MM_col_2, MM_col_3, MM_col_4, = st.columns(5)
 
-MM_col_0.image(NCAA_logo, caption='BKN', width=35)
-MM_col_1.image(FAU_logo, caption='BOS', width=35)
-MM_col_2.image(Miami_logo, caption='NYK', width=35)
-MM_col_3.image(UConn_logo, caption='PHI', width=35)
-MM_col_4.image(SDSU_logo, caption='PHI', width=35)
-
-## WEST LOGOS ##
-WN_col_1, WN_col_2, WN_col_3, WN_col_4, WN_col_5, \
-WP_col_1, WP_col_2, WP_col_3, WP_col_4, WP_col_5, \
-WS_col_1, WS_col_2, WS_col_3, WS_col_4, WS_col_5 = st.columns(15)
-WN_col_1.image(DEN_logo, caption='DEN', width=35)
-WN_col_2.image(MIN_logo, caption='MIN', width=35)
-WN_col_3.image(POR_logo, caption='POR', width=35)
-WN_col_4.image(OKC_logo, caption='OKC', width=35)
+MM_col_0.image(Miami_logo, caption='MIAMI HURRICANES', width=25)
+MM_col_1.image(FAU_logo, caption='FAU OWLS', width=25)
+MM_col_2.image(NCAA_logo, caption='NCAAB', width=25)
+MM_col_3.image(UConn_logo, caption='UCONN HUSKIES', width=25)
+MM_col_4.image(SDSU_logo, caption='SDSU AZTECS', width=25)
 
 
 tab_0, tab_1, tab_2, tab_3, tab_4, tab_5, tab_6, tab_7, tab_8, tab_9, tab_10, \
 tab_11, tab_12, tab_13, tab_14, tab_15, tab_16, tab_17, tab_18, tab_19, tab_20, \
-tab_21, tab_22, tab_23, tab_24, tab_25, tab_26, tab_27, tab_28, tab_29, tab_30, tab_31, tab_32, \
-    = st.tabs(['NBA',
-               '2022-GSW', '2021-MIL', '2020-LAL', '2019-TOR', '2018-GSW',
-               '2017-GSW', '2016-CLE', '2015-GSW', '2014-SAS', '2013-MIA',
-               '2012-MIA', '2011-DAL', '2010-LAL', '2009-LAL', '2008-BOS',
-               '2007-SAS', '2006-MIA', '2005-SAS', '2004-DET', '2003-SAS',
-               '2002-LAL', '2001-LAL', '2000-LAL', '1999-SAS', '1998-CHI',
-               '1997-CHI', '1996-CHI', '1995-HOU', '1994-HOU', '1993-CHI',
-               '1992-CHI', '1991-CHI'
+    = st.tabs(['2023',
+               '2022', '2021', '2020', '2019', '2018',
+               '2017', '2016', '2015', '2014', '2013',
+               '2012', '2011', '2010', '2009', '2008',
+               '2007', '2006', '2005', '2004', '2003',
+               # '2002', '2001', '2000', '1999', '1998',
+               # '1997', '1996', '1995', '1994', '1993',
+               # '1992', '1991',
                ])
-
-# 'ATL', 'BKN', 'BOS', 'CHA', 'CHI', 'CLE', 'DET', 'IND', 'MIA', 'MIL', 'NYK', 'ORL', 'PHI', 'TOR', 'WAS',
-#                'DAL', 'DEN', 'HOU', 'GSW', 'LAC', 'LAL', 'MEM', 'MIN', 'NOP', 'OKC', 'PHX', 'POR', 'SAC', 'SAS', 'UTA',
 
 
 with tab_0:
-    # st.subheader('ALL SECTORS')
-    st.plotly_chart(scatter_matrix_metrics, use_container_width=True, sharing="streamlit")
+    st.subheader('EAST REGION')
+    # st.dataframe()
+    East_region_styler.format('{:.2f}', na_rep='NA').set_table_styles([header, header_level0, index, top_row,
+                                                                       numbers, borders_right,
+                                                                       table_row1, table_row2, table_row3,
+                                                                       table_row4, table_row5, table_row6,
+                                                                       table_row7, table_row8, table_row9,
+                                                                       table_row10, table_row11, table_row12,
+                                                                       table_row13, table_row14, table_row15,
+                                                                       table_row16, table_row17, table_row18,
+                                                                       table_row19, table_row20, table_row21,
+                                                                       table_col1, table_col2, table_col3,
+                                                                       table_col4, table_col5, table_col6,
+                                                                       table_col7, table_col8, table_col9,
+                                                                       table_col10, table_col11, table_col12,
+                                                                       table_col13, table_col14, table_col15,
+                                                                       table_col16, table_col17, table_col18,
+                                                                       table_col19, table_col20, table_col21,
 
-    ## BAR - WS SALARY ##
-    st.plotly_chart(bar_WS_salary.add_traces(line_NBA_salary).add_layout_image(court_img_dict), use_container_width=True, sharing="streamlit")
+                                                                       ]).set_properties(**{'min-width': '55px'},
+                                                                                         **{'max-width': '55px'},
+                                                                                         **{'column-width': '55px'},
+                                                                                         **{'width': '55px'}, )
 
-    st.image(capstone_court, width=1000, use_column_width=True)
+    st.subheader('WEST REGION')
+    st.subheader('SOUTH REGION')
+    st.subheader('MIDWEST REGION')
+    # st.plotly_chart(scatter_matrix_metrics, use_container_width=True, sharing="streamlit")
 
-    ## SCATTER TERNARY ##
+    # st.image(capstone_court, width=1000, use_column_width=True)
+
+    ## SUB-COLUMNS ##
 
     # left, right = st.columns(2)
     # with left:
@@ -682,10 +1115,10 @@ with tab_0:
 
 
     ## LEAGUE LOGOS ##
-    east_col_1, nba_col_2, west_col_3 = st.columns(3)
-    east_col_1.image(East_logo, width=250) # caption='WESTERN CONFERENCE'
-    nba_col_2.image(nba_logo_1, width=300) # caption='NATIONAL BASKETBALL ASSOCIATION'
-    west_col_3.image(West_logo, width=250) # caption='EASTERN CONFERENCE'
+    # east_col_1, nba_col_2, west_col_3 = st.columns(3)
+    # east_col_1.image(East_logo, width=250) # caption='WESTERN CONFERENCE'
+    # nba_col_2.image(nba_logo_1, width=300) # caption='NATIONAL BASKETBALL ASSOCIATION'
+    # west_col_3.image(West_logo, width=250) # caption='EASTERN CONFERENCE'
 
 
 
@@ -699,366 +1132,141 @@ with tab_0:
 
     ## EXTERNAL LINKS ##
 
-    github_link = '[GITHUB REPOSITORY](https://github.com/nehat312/NBA-championship-caliber/)'
-    nba_site_link = '[NBA.com](https://www.nba.com/)'
-    bbref_site_link = '[BASKETBALL REFERENCE](https://www.basketball-reference.com/)'
+    github_link1 = '[GITHUB <> NE](https://github.com/nehat312/march-madness-2023/)'
+    github_link2 = '[GITHUB <> TP](https://github.com/Tyler-Pickett/march-madness-2023/)'
+    kenpom_site_link = '[KENPOM](https://kenpom.com/)'
 
     link_col_1, link_col_2, link_col_3 = st.columns(3)
-    ext_link_1 = link_col_1.markdown(github_link, unsafe_allow_html=True)
-    ext_link_2 = link_col_2.markdown(nba_site_link, unsafe_allow_html=True)
-    ext_link_3 = link_col_3.markdown(bbref_site_link, unsafe_allow_html=True)
+    ext_link_1 = link_col_1.markdown(github_link1, unsafe_allow_html=True)
+    ext_link_2 = link_col_2.markdown(github_link2, unsafe_allow_html=True)
+    ext_link_3 = link_col_3.markdown(kenpom_site_link, unsafe_allow_html=True)
 
 
 with tab_1:
-    st.subheader('2021-2022 GOLDEN STATE WARRIORS')
-    st.image(GSW_logo)
-    st.dataframe(gsw_warriors_2022.style.format(col_format_dict).set_table_styles(df_styles))
+    st.subheader('2EXAMPLE SUBHEADER')
+    st.image(NCAA_logo)
+    st.dataframe(East_region_styler.format('{:.2f}', na_rep='NA').set_table_styles([header, header_level0, index, top_row,
+                                                                       numbers, borders_right,
+                                                                       table_row1, table_row2, table_row3,
+                                                                       table_row4, table_row5, table_row6,
+                                                                       table_row7, table_row8, table_row9,
+                                                                       table_row10, table_row11, table_row12,
+                                                                       table_row13, table_row14, table_row15,
+                                                                       table_row16, table_row17, table_row18,
+                                                                       table_row19, table_row20, table_row21,
+                                                                       table_col1, table_col2, table_col3,
+                                                                       table_col4, table_col5, table_col6,
+                                                                       table_col7, table_col8, table_col9,
+                                                                       table_col10, table_col11, table_col12,
+                                                                       table_col13, table_col14, table_col15,
+                                                                       table_col16, table_col17, table_col18,
+                                                                       table_col19, table_col20, table_col21,
+
+                                                                       ]).set_properties(**{'min-width': '55px'},
+                                                                                         **{'max-width': '55px'},
+                                                                                         **{'column-width': '55px'},
+                                                                                         **{'width': '55px'},))
 
     ## LEAGUE LOGOS ##
-    east_col_1, nba_col_2, west_col_3 = st.columns(3)
-    east_col_1.image(East_logo, width=250)  # caption='WESTERN CONFERENCE'
-    nba_col_2.image(nba_logo_1, width=300)  # caption='NATIONAL BASKETBALL ASSOCIATION'
-    west_col_3.image(West_logo, width=250)  # caption='EASTERN CONFERENCE'
+    # east_col_1, nba_col_2, west_col_3 = st.columns(3)
+    # east_col_1.image(East_logo, width=250)  # caption='WESTERN CONFERENCE'
+    # nba_col_2.image(nba_logo_1, width=300)  # caption='NATIONAL BASKETBALL ASSOCIATION'
+    # west_col_3.image(West_logo, width=250)  # caption='EASTERN CONFERENCE'
 
 with tab_2:
-    st.subheader('2020-2021 MILWAUKEE BUCKS')
-    st.image(MIL_logo)
-    st.dataframe(mil_bucks_2021.style.format(col_format_dict).set_table_styles(df_styles))
-
-    ## LEAGUE LOGOS ##
-    east_col_1, nba_col_2, west_col_3 = st.columns(3)
-    east_col_1.image(East_logo, width=250)  # caption='WESTERN CONFERENCE'
-    nba_col_2.image(nba_logo_1, width=300)  # caption='NATIONAL BASKETBALL ASSOCIATION'
-    west_col_3.image(West_logo, width=250)  # caption='EASTERN CONFERENCE'
+    st.subheader('EXAMPLE SUBHEADER')
+    st.image(NCAA_logo)
+    # st.dataframe(mil_bucks_2021.style.format(col_format_dict).set_table_styles(df_styles))
 
 with tab_3:
-    st.subheader('2019-2020 LOS ANGELES LAKERS')
-    st.image(LAL_logo)
-    st.dataframe(lal_lakers_2020.style.format(col_format_dict).set_table_styles(df_styles))
-
-    ## LEAGUE LOGOS ##
-    east_col_1, nba_col_2, west_col_3 = st.columns(3)
-    east_col_1.image(East_logo, width=250)  # caption='WESTERN CONFERENCE'
-    nba_col_2.image(nba_logo_1, width=300)  # caption='NATIONAL BASKETBALL ASSOCIATION'
-    west_col_3.image(West_logo, width=250)  # caption='EASTERN CONFERENCE'
+    st.subheader('EXAMPLE SUBHEADER')
+    st.image(NCAA_logo)
+    # st.dataframe(lal_lakers_2020.style.format(col_format_dict).set_table_styles(df_styles))
 
 with tab_4:
-    st.subheader('2018-2019 TORONTO RAPTORS')
-    st.image(TOR_logo)
-    st.dataframe(tor_raptors_2019.style.format(col_format_dict).set_table_styles(df_styles))
-
-    ## LEAGUE LOGOS ##
-    east_col_1, nba_col_2, west_col_3 = st.columns(3)
-    east_col_1.image(East_logo, width=250)  # caption='WESTERN CONFERENCE'
-    nba_col_2.image(nba_logo_1, width=300)  # caption='NATIONAL BASKETBALL ASSOCIATION'
-    west_col_3.image(West_logo, width=250)  # caption='EASTERN CONFERENCE'
+    st.subheader('EXAMPLE SUBHEADER')
+    st.image(NCAA_logo)
+    # st.dataframe(tor_raptors_2019.style.format(col_format_dict).set_table_styles(df_styles))
 
 with tab_5:
-    st.subheader('2017-2018 GOLDEN STATE WARRIORS')
-    st.image(GSW_logo)
-    st.dataframe(gsw_warriors_2018.style.format(col_format_dict).set_table_styles(df_styles))
-
-    ## LEAGUE LOGOS ##
-    east_col_1, nba_col_2, west_col_3 = st.columns(3)
-    east_col_1.image(East_logo, width=250)  # caption='WESTERN CONFERENCE'
-    nba_col_2.image(nba_logo_1, width=300)  # caption='NATIONAL BASKETBALL ASSOCIATION'
-    west_col_3.image(West_logo, width=250)  # caption='EASTERN CONFERENCE'
+    st.subheader('EXAMPLE SUBHEADER')
+    st.image(NCAA_logo)
+    # st.dataframe(gsw_warriors_2018.style.format(col_format_dict).set_table_styles(df_styles))
 
 with tab_6:
-    st.subheader('2016-2017 GOLDEN STATE WARRIORS')
-    st.image(GSW_logo)
-    st.dataframe(gsw_warriors_2017.style.format(col_format_dict).set_table_styles(df_styles))
-
-    ## LEAGUE LOGOS ##
-    east_col_1, nba_col_2, west_col_3 = st.columns(3)
-    east_col_1.image(East_logo, width=250)  # caption='WESTERN CONFERENCE'
-    nba_col_2.image(nba_logo_1, width=300)  # caption='NATIONAL BASKETBALL ASSOCIATION'
-    west_col_3.image(West_logo, width=250)  # caption='EASTERN CONFERENCE'
+    st.subheader('EXAMPLE SUBHEADER')
+    st.image(NCAA_logo)
+    # st.dataframe(gsw_warriors_2017.style.format(col_format_dict).set_table_styles(df_styles))
 
 with tab_7:
-    st.subheader('2015-2016 CLEVELAND CAVALIERS')
-    st.image(CLE_logo)
-    st.dataframe(cle_cavs_2016.style.format(col_format_dict).set_table_styles(df_styles))
-
-    ## LEAGUE LOGOS ##
-    east_col_1, nba_col_2, west_col_3 = st.columns(3)
-    east_col_1.image(East_logo, width=250)  # caption='WESTERN CONFERENCE'
-    nba_col_2.image(nba_logo_1, width=300)  # caption='NATIONAL BASKETBALL ASSOCIATION'
-    west_col_3.image(West_logo, width=250)  # caption='EASTERN CONFERENCE'
+    st.subheader('EXAMPLE SUBHEADER')
+    st.image(NCAA_logo)
+    # st.dataframe(cle_cavs_2016.style.format(col_format_dict).set_table_styles(df_styles))
 
 with tab_8:
-    st.subheader('2014-2015 GOLDEN STATE WARRIORS')
-    st.image(GSW_logo)
-    st.dataframe(gsw_warriors_2015.style.format(col_format_dict).set_table_styles(df_styles))
-
-    ## LEAGUE LOGOS ##
-    east_col_1, nba_col_2, west_col_3 = st.columns(3)
-    east_col_1.image(East_logo, width=250)  # caption='WESTERN CONFERENCE'
-    nba_col_2.image(nba_logo_1, width=300)  # caption='NATIONAL BASKETBALL ASSOCIATION'
-    west_col_3.image(West_logo, width=250)  # caption='EASTERN CONFERENCE'
+    st.subheader('EXAMPLE SUBHEADER')
+    st.image(NCAA_logo)
+    # st.dataframe(gsw_warriors_2015.style.format(col_format_dict).set_table_styles(df_styles))
 
 with tab_9:
-    st.subheader('2013-2014 SAN ANTONIO SPURS')
-    st.image(SAS_logo)
-    st.dataframe(sas_spurs_2014.style.format(col_format_dict).set_table_styles(df_styles))
-
-    ## LEAGUE LOGOS ##
-    east_col_1, nba_col_2, west_col_3 = st.columns(3)
-    east_col_1.image(East_logo, width=250)  # caption='WESTERN CONFERENCE'
-    nba_col_2.image(nba_logo_1, width=300)  # caption='NATIONAL BASKETBALL ASSOCIATION'
-    west_col_3.image(West_logo, width=250)  # caption='EASTERN CONFERENCE'
+    st.subheader('EXAMPLE SUBHEADER')
+    st.image(NCAA_logo)
+    # st.dataframe(sas_spurs_2014.style.format(col_format_dict).set_table_styles(df_styles))
 
 with tab_10:
-    st.subheader('2012-2013 MIAMI HEAT')
-    st.image(MIA_logo)
-    st.dataframe(mia_heat_2013.style.format(col_format_dict).set_table_styles(df_styles))
-
-    ## LEAGUE LOGOS ##
-    east_col_1, nba_col_2, west_col_3 = st.columns(3)
-    east_col_1.image(East_logo, width=250)  # caption='WESTERN CONFERENCE'
-    nba_col_2.image(nba_logo_1, width=300)  # caption='NATIONAL BASKETBALL ASSOCIATION'
-    west_col_3.image(West_logo, width=250)  # caption='EASTERN CONFERENCE'
+    st.subheader('EXAMPLE SUBHEADER')
+    st.image(NCAA_logo)
+    # st.dataframe(mia_heat_2013.style.format(col_format_dict).set_table_styles(df_styles))
 
 with tab_11:
-    st.subheader('2011-2012 MIAMI HEAT')
-    st.image(MIA_logo)
-    st.dataframe(mia_heat_2012.style.format(col_format_dict).set_table_styles(df_styles))
-    ## LEAGUE LOGOS ##
-    east_col_1, nba_col_2, west_col_3 = st.columns(3)
-    east_col_1.image(East_logo, width=250)  # caption='WESTERN CONFERENCE'
-    nba_col_2.image(nba_logo_1, width=300)  # caption='NATIONAL BASKETBALL ASSOCIATION'
-    west_col_3.image(West_logo, width=250)  # caption='EASTERN CONFERENCE'
+    st.subheader('EXAMPLE SUBHEADER')
+    st.image(NCAA_logo)
+    # st.dataframe(mia_heat_2012.style.format(col_format_dict).set_table_styles(df_styles))
 
 with tab_12:
-    st.subheader('2010-2011 DALLAS MAVERICKS')
-    st.image(DAL_logo)
-    st.dataframe(dal_mavs_2011.style.format(col_format_dict).set_table_styles(df_styles))
-
-    ## LEAGUE LOGOS ##
-    east_col_1, nba_col_2, west_col_3 = st.columns(3)
-    east_col_1.image(East_logo, width=250)  # caption='WESTERN CONFERENCE'
-    nba_col_2.image(nba_logo_1, width=300)  # caption='NATIONAL BASKETBALL ASSOCIATION'
-    west_col_3.image(West_logo, width=250)  # caption='EASTERN CONFERENCE'
+    st.subheader('EXAMPLE SUBHEADER')
+    st.image(NCAA_logo)
+    # st.dataframe(dal_mavs_2011.style.format(col_format_dict).set_table_styles(df_styles))
 
 with tab_13:
-    st.subheader('2009-2010 LOS ANGELES LAKERS')
-    st.image(LAL_logo)
-    st.dataframe(lal_lakers_2010.style.format(col_format_dict).set_table_styles(df_styles))
-
-    ## LEAGUE LOGOS ##
-    east_col_1, nba_col_2, west_col_3 = st.columns(3)
-    east_col_1.image(East_logo, width=250)  # caption='WESTERN CONFERENCE'
-    nba_col_2.image(nba_logo_1, width=300)  # caption='NATIONAL BASKETBALL ASSOCIATION'
-    west_col_3.image(West_logo, width=250)  # caption='EASTERN CONFERENCE'
+    st.subheader('EXAMPLE SUBHEADER')
+    st.image(NCAA_logo)
+    # st.dataframe(lal_lakers_2010.style.format(col_format_dict).set_table_styles(df_styles))
 
 with tab_14:
-    st.subheader('2008-2009 LOS ANGELES LAKERS')
-    st.image(LAL_logo)
-    st.dataframe(lal_lakers_2009.style.format(col_format_dict).set_table_styles(df_styles))
-
-    ## LEAGUE LOGOS ##
-    east_col_1, nba_col_2, west_col_3 = st.columns(3)
-    east_col_1.image(East_logo, width=250)  # caption='WESTERN CONFERENCE'
-    nba_col_2.image(nba_logo_1, width=300)  # caption='NATIONAL BASKETBALL ASSOCIATION'
-    west_col_3.image(West_logo, width=250)  # caption='EASTERN CONFERENCE'
+    st.subheader('EXAMPLE SUBHEADER')
+    st.image(NCAA_logo)
+    # st.dataframe(lal_lakers_2009.style.format(col_format_dict).set_table_styles(df_styles))
 
 with tab_15:
-    st.subheader('2007-2008 BOSTON CELTICS')
-    st.image(BOS_logo)
-    st.dataframe(bos_celtics_2008.style.format(col_format_dict).set_table_styles(df_styles))
-
-    ## LEAGUE LOGOS ##
-    east_col_1, nba_col_2, west_col_3 = st.columns(3)
-    east_col_1.image(East_logo, width=250)  # caption='WESTERN CONFERENCE'
-    nba_col_2.image(nba_logo_1, width=300)  # caption='NATIONAL BASKETBALL ASSOCIATION'
-    west_col_3.image(West_logo, width=250)  # caption='EASTERN CONFERENCE'
+    st.subheader('EXAMPLE SUBHEADER')
+    st.image(NCAA_logo)
+    # st.dataframe(bos_celtics_2008.style.format(col_format_dict).set_table_styles(df_styles))
 
 with tab_16:
-    st.subheader('2006-2007 SAN ANTONIO SPURS')
-    st.image(SAS_logo)
-    st.dataframe(sas_spurs_2007.style.format(col_format_dict).set_table_styles(df_styles))
-
-    ## LEAGUE LOGOS ##
-    east_col_1, nba_col_2, west_col_3 = st.columns(3)
-    east_col_1.image(East_logo, width=250)  # caption='WESTERN CONFERENCE'
-    nba_col_2.image(nba_logo_1, width=300)  # caption='NATIONAL BASKETBALL ASSOCIATION'
-    west_col_3.image(West_logo, width=250)  # caption='EASTERN CONFERENCE'
+    st.subheader('EXAMPLE SUBHEADER')
+    st.image(NCAA_logo)
+    # st.dataframe(sas_spurs_2007.style.format(col_format_dict).set_table_styles(df_styles))
 
 with tab_17:
-    st.subheader('2005-2006 MIAMI HEAT')
-    st.image(MIA_logo)
-    st.dataframe(mia_heat_2006.style.format(col_format_dict).set_table_styles(df_styles))
-
-    ## LEAGUE LOGOS ##
-    east_col_1, nba_col_2, west_col_3 = st.columns(3)
-    east_col_1.image(East_logo, width=250)  # caption='WESTERN CONFERENCE'
-    nba_col_2.image(nba_logo_1, width=300)  # caption='NATIONAL BASKETBALL ASSOCIATION'
-    west_col_3.image(West_logo, width=250)  # caption='EASTERN CONFERENCE'
+    st.subheader('EXAMPLE SUBHEADER')
+    st.image(NCAA_logo)
+    # st.dataframe(mia_heat_2006.style.format(col_format_dict).set_table_styles(df_styles))
 
 with tab_18:
-    st.subheader('2004-2005 SAN ANTONIO SPURS')
-    st.image(SAS_logo)
-    st.dataframe(sas_spurs_2005.style.format(col_format_dict).set_table_styles(df_styles))
-
-    ## LEAGUE LOGOS ##
-    east_col_1, nba_col_2, west_col_3 = st.columns(3)
-    east_col_1.image(East_logo, width=250)  # caption='WESTERN CONFERENCE'
-    nba_col_2.image(nba_logo_1, width=300)  # caption='NATIONAL BASKETBALL ASSOCIATION'
-    west_col_3.image(West_logo, width=250)  # caption='EASTERN CONFERENCE'
+    st.subheader('EXAMPLE SUBHEADER')
+    st.image(NCAA_logo)
+    # st.dataframe(sas_spurs_2005.style.format(col_format_dict).set_table_styles(df_styles))
 
 with tab_19:
-    st.subheader('2003-2004 DETROIT PISTONS')
-    st.image(DET_logo)
-    st.dataframe(det_pistons_2004.style.format(col_format_dict).set_table_styles(df_styles))
-
-    ## LEAGUE LOGOS ##
-    east_col_1, nba_col_2, west_col_3 = st.columns(3)
-    east_col_1.image(East_logo, width=250)  # caption='WESTERN CONFERENCE'
-    nba_col_2.image(nba_logo_1, width=300)  # caption='NATIONAL BASKETBALL ASSOCIATION'
-    west_col_3.image(West_logo, width=250)  # caption='EASTERN CONFERENCE'
+    st.subheader('EXAMPLE SUBHEADER')
+    st.image(NCAA_logo)
+    # st.dataframe(det_pistons_2004.style.format(col_format_dict).set_table_styles(df_styles))
 
 with tab_20:
-    st.subheader('2002-2003 SAN ANTONIO SPURS')
-    st.image(SAS_logo)
-    st.dataframe(sas_spurs_2003.style.format(col_format_dict).set_table_styles(df_styles))
-
-    ## LEAGUE LOGOS ##
-    east_col_1, nba_col_2, west_col_3 = st.columns(3)
-    east_col_1.image(East_logo, width=250)  # caption='WESTERN CONFERENCE'
-    nba_col_2.image(nba_logo_1, width=300)  # caption='NATIONAL BASKETBALL ASSOCIATION'
-    west_col_3.image(West_logo, width=250)  # caption='EASTERN CONFERENCE'
-
-with tab_21:
-    st.subheader('2001-2002 LOS ANGELES LAKERS')
-    st.image(LAL_logo)
-    st.dataframe(lal_lakers_2002.style.format(col_format_dict).set_table_styles(df_styles))
-
-    ## LEAGUE LOGOS ##
-    east_col_1, nba_col_2, west_col_3 = st.columns(3)
-    east_col_1.image(East_logo, width=250)  # caption='WESTERN CONFERENCE'
-    nba_col_2.image(nba_logo_1, width=300)  # caption='NATIONAL BASKETBALL ASSOCIATION'
-    west_col_3.image(West_logo, width=250)  # caption='EASTERN CONFERENCE'
-
-with tab_22:
-    st.subheader('2000-2001 LOS ANGELES LAKERS')
-    st.image(LAL_logo)
-    st.dataframe(lal_lakers_2001.style.format(col_format_dict).set_table_styles(df_styles))
-
-    ## LEAGUE LOGOS ##
-    east_col_1, nba_col_2, west_col_3 = st.columns(3)
-    east_col_1.image(East_logo, width=250)  # caption='WESTERN CONFERENCE'
-    nba_col_2.image(nba_logo_1, width=300)  # caption='NATIONAL BASKETBALL ASSOCIATION'
-    west_col_3.image(West_logo, width=250)  # caption='EASTERN CONFERENCE'
-
-with tab_23:
-    st.subheader('1999-2000 LOS ANGELES LAKERS')
-    st.image(LAL_logo)
-    st.dataframe(lal_lakers_2000.style.format(col_format_dict).set_table_styles(df_styles))
-
-    ## LEAGUE LOGOS ##
-    east_col_1, nba_col_2, west_col_3 = st.columns(3)
-    east_col_1.image(East_logo, width=250)  # caption='WESTERN CONFERENCE'
-    nba_col_2.image(nba_logo_1, width=300)  # caption='NATIONAL BASKETBALL ASSOCIATION'
-    west_col_3.image(West_logo, width=250)  # caption='EASTERN CONFERENCE'
-
-with tab_24:
-    st.subheader('1998-1999 SAN ANTONIO SPURS')
-    st.image(SAS_logo)
-    st.dataframe(sas_spurs_1999.style.format(col_format_dict).set_table_styles(df_styles))
-
-    ## LEAGUE LOGOS ##
-    east_col_1, nba_col_2, west_col_3 = st.columns(3)
-    east_col_1.image(East_logo, width=250)  # caption='WESTERN CONFERENCE'
-    nba_col_2.image(nba_logo_1, width=300)  # caption='NATIONAL BASKETBALL ASSOCIATION'
-    west_col_3.image(West_logo, width=250)  # caption='EASTERN CONFERENCE'
-
-with tab_25:
-    st.subheader('1997-1998 CHICAGO BULLS')
-    st.image(CHI_logo)
-    st.dataframe(chi_bulls_1998.style.format(col_format_dict).set_table_styles(df_styles))
-
-    ## LEAGUE LOGOS ##
-    east_col_1, nba_col_2, west_col_3 = st.columns(3)
-    east_col_1.image(East_logo, width=250)  # caption='WESTERN CONFERENCE'
-    nba_col_2.image(nba_logo_1, width=300)  # caption='NATIONAL BASKETBALL ASSOCIATION'
-    west_col_3.image(West_logo, width=250)  # caption='EASTERN CONFERENCE'
-
-with tab_26:
-    st.subheader('1996-1997 CHICAGO BULLS')
-    st.image(CHI_logo)
-    st.dataframe(chi_bulls_1997.style.format(col_format_dict).set_table_styles(df_styles))
-
-    ## LEAGUE LOGOS ##
-    east_col_1, nba_col_2, west_col_3 = st.columns(3)
-    east_col_1.image(East_logo, width=250)  # caption='WESTERN CONFERENCE'
-    nba_col_2.image(nba_logo_1, width=300)  # caption='NATIONAL BASKETBALL ASSOCIATION'
-    west_col_3.image(West_logo, width=250)  # caption='EASTERN CONFERENCE'
-
-with tab_27:
-    st.subheader('1995-1996 CHICAGO BULLS')
-    st.image(CHI_logo)
-    st.dataframe(chi_bulls_1996.style.format(col_format_dict).set_table_styles(df_styles))
-
-    ## LEAGUE LOGOS ##
-    east_col_1, nba_col_2, west_col_3 = st.columns(3)
-    east_col_1.image(East_logo, width=250)  # caption='WESTERN CONFERENCE'
-    nba_col_2.image(nba_logo_1, width=300)  # caption='NATIONAL BASKETBALL ASSOCIATION'
-    west_col_3.image(West_logo, width=250)  # caption='EASTERN CONFERENCE'
-
-with tab_28:
-    st.subheader('1994-1995 HOUSTON ROCKETS')
-    st.image(HOU_logo)
-    st.dataframe(hou_rockets_1995.style.format(col_format_dict).set_table_styles(df_styles))
-
-    ## LEAGUE LOGOS ##
-    east_col_1, nba_col_2, west_col_3 = st.columns(3)
-    east_col_1.image(East_logo, width=250)  # caption='WESTERN CONFERENCE'
-    nba_col_2.image(nba_logo_1, width=300)  # caption='NATIONAL BASKETBALL ASSOCIATION'
-    west_col_3.image(West_logo, width=250)  # caption='EASTERN CONFERENCE'
-
-with tab_29:
-    st.subheader('1993-1994 HOUSTON ROCKETS')
-    st.image(HOU_logo)
-    st.dataframe(hou_rockets_1994.style.format(col_format_dict).set_table_styles(df_styles))
-
-    ## LEAGUE LOGOS ##
-    east_col_1, nba_col_2, west_col_3 = st.columns(3)
-    east_col_1.image(East_logo, width=250)  # caption='WESTERN CONFERENCE'
-    nba_col_2.image(nba_logo_1, width=300)  # caption='NATIONAL BASKETBALL ASSOCIATION'
-    west_col_3.image(West_logo, width=250)  # caption='EASTERN CONFERENCE'
-
-with tab_30:
-    st.subheader('1992-1993 CHICAGO BULLS')
-    st.image(CHI_logo)
-    st.dataframe(chi_bulls_1993.style.format(col_format_dict).set_table_styles(df_styles))
-
-    ## LEAGUE LOGOS ##
-    east_col_1, nba_col_2, west_col_3 = st.columns(3)
-    east_col_1.image(East_logo, width=250)  # caption='WESTERN CONFERENCE'
-    nba_col_2.image(nba_logo_1, width=300)  # caption='NATIONAL BASKETBALL ASSOCIATION'
-    west_col_3.image(West_logo, width=250)  # caption='EASTERN CONFERENCE'
-
-with tab_31:
-    st.subheader('1991-1992 CHICAGO BULLS')
-    st.image(CHI_logo)
-    st.dataframe(chi_bulls_1992.style.format(col_format_dict).set_table_styles(df_styles))
-
-    ## LEAGUE LOGOS ##
-    east_col_1, nba_col_2, west_col_3 = st.columns(3)
-    east_col_1.image(East_logo, width=250)  # caption='WESTERN CONFERENCE'
-    nba_col_2.image(nba_logo_1, width=300)  # caption='NATIONAL BASKETBALL ASSOCIATION'
-    west_col_3.image(West_logo, width=250)  # caption='EASTERN CONFERENCE'
-
-with tab_32:
-    st.subheader('1990-1991 CHICAGO BULLS')
-    st.image(CHI_logo)
-    st.dataframe(chi_bulls_1991.style.format(col_format_dict).set_table_styles(df_styles))
-
-    ## LEAGUE LOGOS ##
-    east_col_1, nba_col_2, west_col_3 = st.columns(3)
-    east_col_1.image(East_logo, width=250)  # caption='WESTERN CONFERENCE'
-    nba_col_2.image(nba_logo_1, width=300)  # caption='NATIONAL BASKETBALL ASSOCIATION'
-    west_col_3.image(West_logo, width=250)  # caption='EASTERN CONFERENCE'
+    st.subheader('EXAMPLE SUBHEADER')
+    st.image(NCAA_logo)
+    # st.dataframe(sas_spurs_2003.style.format(col_format_dict).set_table_styles(df_styles))
 
 
 
