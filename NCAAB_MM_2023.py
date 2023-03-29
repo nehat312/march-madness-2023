@@ -379,8 +379,8 @@ numbers = {'selector': 'td.data',
            'props': [('text-align', 'center'), ('vertical-align', 'center'),
                      ('font-weight', 'bold')]}  # ('background-color', '#0360CE'), ('color', 'white')
 
-borders_right = {'selector': '.row_heading.level1', 'props':
-    [('border-right', '1px solid #FFFFFF')]}
+borders_right = {'selector': '.row_heading.level1',
+                 'props': [('border-right', '1px solid #FFFFFF')]}
 
 ## ROWS ##
 
@@ -391,8 +391,7 @@ top_row = {'selector': 'td.data.row0',
 
 table_row0 = {'selector': '.row0',
               'props': [('border-bottom', '2px dashed #000000'),
-                        ('text-align', 'center'), ('font-weight', 'bold'),
-                        ('font-size', '12px')]}  # ('border-top', '1px solid #000000')
+                        ('text-align', 'center'), ('font-weight', 'bold'), ('font-size', '12px')]}  # ('border-top', '1px solid #000000')
 
 table_row1 = {'selector': '.row1',
               'props': [('text-align', 'center'), ('font-weight', 'bold'), ('font-size', '12px')]}
@@ -471,7 +470,8 @@ table_row21 = {'selector': '.row21',
 
 table_col0 = {'selector': '.row0',
               'props': [('border-left', '3px solid #000000'),
-                        ('min-width:', '100px'), ('max-width:', '100px'), ('column-width:', '100px'), ]}
+                        #('min-width:', '100px'), ('max-width:', '100px'), ('column-width:', '100px'),
+                        ]}
 
 table_col1 = {'selector': '.col1',
               'props': [('border-left', '2px dashed #000000')]}
