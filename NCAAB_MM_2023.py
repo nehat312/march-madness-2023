@@ -54,6 +54,7 @@ mm_database_2023 = pd.read_csv(mm_database_csv, index_col='TEAM')
 
 ## FINAL FOUR LOGOS ##
 NCAA_logo = Image.open('images/NCAA_logo1.png')
+FF_logo = Image.open('images/FinalFour_2023.png')
 FAU_logo = Image.open('images/FAU_Owls.png')
 Miami_logo = Image.open('images/Miami_Canes.png')
 UConn_logo = Image.open('images/UConn_Huskies.png')
@@ -945,7 +946,8 @@ MM_col_0, MM_col_1, MM_col_2, MM_col_3, MM_col_4, = st.columns(5)
 
 MM_col_0.image(Miami_logo, caption='MIAMI HURRICANES', width=200)
 MM_col_1.image(FAU_logo, caption='FAU OWLS', width=200)
-MM_col_2.image(NCAA_logo, caption='NCAAB', width=200)
+# MM_col_2.image(NCAA_logo, caption='NCAAB')
+MM_col_2.image(FF_logo, width=200)
 MM_col_3.image(UConn_logo, caption='UCONN HUSKIES', width=200)
 MM_col_4.image(SDSU_logo, caption='SDSU AZTECS', width=200)
 
