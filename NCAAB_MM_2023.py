@@ -538,101 +538,6 @@ table_col21 = {'selector': '.col21',
 # apply styles
 # table = table.style.set_table_styles([header, header_level0, index, top_row, borders_bottom1, borders_bottom2, borders_bottom3, borders_bottom4, borders_bottom5, borders_right])
 
-
-## REGION DATAFRAMES ##
-## EAST REGION ##
-East_region_styler.format('{:.2f}', na_rep='NA').set_table_styles([header, header_level0, index, top_row,
-                                                                   numbers, borders_right,
-                                                                   table_row1, table_row2, table_row3,
-                                                                   table_row4, table_row5, table_row6,
-                                                                   table_row7, table_row8, table_row9,
-                                                                   table_row10, table_row11, table_row12,
-                                                                   table_row13, table_row14, table_row15,
-                                                                   table_row16, table_row17, table_row18,
-                                                                   table_row19, table_row20, table_row21,
-                                                                   table_col1, table_col2, table_col3,
-                                                                   table_col4, table_col5, table_col6,
-                                                                   table_col7, table_col8, table_col9,
-                                                                   table_col10, table_col11, table_col12,
-                                                                   table_col13, table_col14, table_col15,
-                                                                   table_col16, table_col17, table_col18,
-                                                                   table_col19, table_col20, table_col21,
-
-                                                                   ]).set_properties(**{'min-width': '55px'},
-                                                                                     **{'max-width': '55px'},
-                                                                                     **{'column-width': '55px'},
-                                                                                     **{'width': '55px'}, )
-
-## WEST REGION ##
-West_region_styler.format('{:.2f}', na_rep='NA').set_table_styles([header, header_level0, index, top_row,
-                                                                   numbers, borders_right,
-                                                                   table_row1, table_row2, table_row3,
-                                                                   table_row4, table_row5, table_row6,
-                                                                   table_row7, table_row8, table_row9,
-                                                                   table_row10, table_row11, table_row12,
-                                                                   table_row13, table_row14, table_row15,
-                                                                   table_row16, table_row17, table_row18,
-                                                                   table_row19, table_row20, table_row21,
-                                                                   table_col1, table_col2, table_col3,
-                                                                   table_col4, table_col5, table_col6,
-                                                                   table_col7, table_col8, table_col9,
-                                                                   table_col10, table_col11, table_col12,
-                                                                   table_col13, table_col14, table_col15,
-                                                                   table_col16, table_col17, table_col18,
-                                                                   table_col19, table_col20, table_col21,
-
-                                                                   ]).set_properties(**{'min-width': '55px'},
-                                                                                     **{'max-width': '55px'},
-                                                                                     **{'column-width': '55px'},
-                                                                                     **{'width': '55px'}, )  # , subset=[0,1]
-
-## SOUTH REGION ##
-South_region_styler.format('{:.2f}', na_rep='NA').set_table_styles([header, header_level0, index, top_row,
-                                                                    numbers, borders_right,
-                                                                    table_row1, table_row2, table_row3,
-                                                                    table_row4, table_row5, table_row6,
-                                                                    table_row7, table_row8, table_row9,
-                                                                    table_row10, table_row11, table_row12,
-                                                                    table_row13, table_row14, table_row15,
-                                                                    table_row16, table_row17, table_row18,
-                                                                    table_row19, table_row20, table_row21,
-                                                                    table_col1, table_col2, table_col3,
-                                                                    table_col4, table_col5, table_col6,
-                                                                    table_col7, table_col8, table_col9,
-                                                                    table_col10, table_col11, table_col12,
-                                                                    table_col13, table_col14, table_col15,
-                                                                    table_col16, table_col17, table_col18,
-                                                                    table_col19, table_col20, table_col21,
-
-                                                                    ]).set_properties(**{'min-width': '55px'},
-                                                                                      **{'max-width': '55px'},
-                                                                                      **{'column-width': '55px'},
-                                                                                      **{ 'width': '55px'}, )  # , subset=[0,1]
-
-## MIDWEST REGION ##
-
-Midwest_region_styler.format('{:.2f}', na_rep='NA').set_table_styles([header, header_level0, index, top_row,
-                                                                      numbers, borders_right,
-                                                                      table_row1, table_row2, table_row3,
-                                                                      table_row4, table_row5, table_row6,
-                                                                      table_row7, table_row8, table_row9,
-                                                                      table_row10, table_row11, table_row12,
-                                                                      table_row13, table_row14, table_row15,
-                                                                      table_row16, table_row17, table_row18,
-                                                                      table_row19, table_row20, table_row21,
-                                                                      table_col1, table_col2, table_col3,
-                                                                      table_col4, table_col5, table_col6,
-                                                                      table_col7, table_col8, table_col9,
-                                                                      table_col10, table_col11, table_col12,
-                                                                      table_col13, table_col14, table_col15,
-                                                                      table_col16, table_col17, table_col18,
-                                                                      table_col19, table_col20, table_col21,
-
-                                                                      ]).set_properties(**{'min-width': '55px'},
-                                                                                        **{'max-width': '55px'},
-                                                                                        **{'column-width': '55px'},
-                                                                                        **{'width': '55px'}, )  # , subset=[0,1]
-
 ## FILL BARS ##
 # df.style.bar(subset = ["D"],
 #              align = "mid",
@@ -1038,11 +943,11 @@ st.write('*STATISTICAL BREAKDOWN OF CURRENT + HISTORICAL MARCH MADNESS TEAMS*')
 ## EAST LOGOS ##
 MM_col_0, MM_col_1, MM_col_2, MM_col_3, MM_col_4, = st.columns(5)
 
-MM_col_0.image(Miami_logo, caption='MIAMI HURRICANES', width=25)
-MM_col_1.image(FAU_logo, caption='FAU OWLS', width=25)
-MM_col_2.image(NCAA_logo, caption='NCAAB', width=25)
-MM_col_3.image(UConn_logo, caption='UCONN HUSKIES', width=25)
-MM_col_4.image(SDSU_logo, caption='SDSU AZTECS', width=25)
+MM_col_0.image(Miami_logo, caption='MIAMI HURRICANES', width=200)
+MM_col_1.image(FAU_logo, caption='FAU OWLS', width=200)
+MM_col_2.image(NCAA_logo, caption='NCAAB', width=200)
+MM_col_3.image(UConn_logo, caption='UCONN HUSKIES', width=200)
+MM_col_4.image(SDSU_logo, caption='SDSU AZTECS', width=200)
 
 
 tab_0, tab_1, tab_2, tab_3, tab_4, tab_5, tab_6, tab_7, tab_8, tab_9, tab_10, \
@@ -1059,9 +964,38 @@ tab_11, tab_12, tab_13, tab_14, tab_15, tab_16, tab_17, tab_18, tab_19, tab_20, 
 
 
 with tab_0:
+
+## REGIONAL HEATMAPS ##
+
+    ## EAST REGION ##
     st.subheader('EAST REGION')
-    # st.dataframe()
-    East_region_styler.format('{:.2f}', na_rep='NA').set_table_styles([header, header_level0, index, top_row,
+    st.dataframe(
+        East_region_styler.format('{:.2f}', na_rep='NA').set_table_styles([header, header_level0, index, top_row,
+                                                                           numbers, borders_right,
+                                                                           table_row1, table_row2, table_row3,
+                                                                           table_row4, table_row5, table_row6,
+                                                                           table_row7, table_row8, table_row9,
+                                                                           table_row10, table_row11, table_row12,
+                                                                           table_row13, table_row14, table_row15,
+                                                                           table_row16, table_row17, table_row18,
+                                                                           table_row19, table_row20, table_row21,
+                                                                           table_col1, table_col2, table_col3,
+                                                                           table_col4, table_col5, table_col6,
+                                                                           table_col7, table_col8, table_col9,
+                                                                           table_col10, table_col11, table_col12,
+                                                                           table_col13, table_col14, table_col15,
+                                                                           table_col16, table_col17, table_col18,
+                                                                           table_col19, table_col20, table_col21,
+
+                                                                           ]).set_properties(**{'min-width': '55px'},
+                                                                                             **{'max-width': '55px'},
+                                                                                             **{'column-width': '55px'},
+                                                                                             **{'width': '55px'}, ))
+
+    ## WEST REGION ##
+    st.subheader('WEST REGION')
+    st.dataframe(
+        West_region_styler.format('{:.2f}', na_rep='NA').set_table_styles([header, header_level0, index, top_row,
                                                                        numbers, borders_right,
                                                                        table_row1, table_row2, table_row3,
                                                                        table_row4, table_row5, table_row6,
@@ -1081,13 +1015,58 @@ with tab_0:
                                                                        ]).set_properties(**{'min-width': '55px'},
                                                                                          **{'max-width': '55px'},
                                                                                          **{'column-width': '55px'},
-                                                                                         **{'width': '55px'}, )
+                                                                                         **{'width': '55px'}, ))
 
-    st.subheader('WEST REGION')
+    ## SOUTH REGION ##
     st.subheader('SOUTH REGION')
-    st.subheader('MIDWEST REGION')
-    # st.plotly_chart(scatter_matrix_metrics, use_container_width=True, sharing="streamlit")
+    st.dataframe(
+        South_region_styler.format('{:.2f}', na_rep='NA').set_table_styles([header, header_level0, index, top_row,
+                                                                        numbers, borders_right,
+                                                                        table_row1, table_row2, table_row3,
+                                                                        table_row4, table_row5, table_row6,
+                                                                        table_row7, table_row8, table_row9,
+                                                                        table_row10, table_row11, table_row12,
+                                                                        table_row13, table_row14, table_row15,
+                                                                        table_row16, table_row17, table_row18,
+                                                                        table_row19, table_row20, table_row21,
+                                                                        table_col1, table_col2, table_col3,
+                                                                        table_col4, table_col5, table_col6,
+                                                                        table_col7, table_col8, table_col9,
+                                                                        table_col10, table_col11, table_col12,
+                                                                        table_col13, table_col14, table_col15,
+                                                                        table_col16, table_col17, table_col18,
+                                                                        table_col19, table_col20, table_col21,
 
+                                                                        ]).set_properties(**{'min-width': '55px'},
+                                                                                          **{'max-width': '55px'},
+                                                                                          **{'column-width': '55px'},
+                                                                                          **{'width': '55px'}, ))
+
+    ## MIDWEST REGION ##
+    st.subheader('MIDWEST REGION')
+    st.dataframe(Midwest_region_styler.format('{:.2f}', na_rep='NA').set_table_styles([header, header_level0, index, top_row,
+                                                                          numbers, borders_right,
+                                                                          table_row1, table_row2, table_row3,
+                                                                          table_row4, table_row5, table_row6,
+                                                                          table_row7, table_row8, table_row9,
+                                                                          table_row10, table_row11, table_row12,
+                                                                          table_row13, table_row14, table_row15,
+                                                                          table_row16, table_row17, table_row18,
+                                                                          table_row19, table_row20, table_row21,
+                                                                          table_col1, table_col2, table_col3,
+                                                                          table_col4, table_col5, table_col6,
+                                                                          table_col7, table_col8, table_col9,
+                                                                          table_col10, table_col11, table_col12,
+                                                                          table_col13, table_col14, table_col15,
+                                                                          table_col16, table_col17, table_col18,
+                                                                          table_col19, table_col20, table_col21,
+
+                                                                          ]).set_properties(**{'min-width': '55px'},
+                                                                                            **{'max-width': '55px'},
+                                                                                            **{'column-width': '55px'},
+                                                                                            **{'width': '55px'}, ))
+
+    # st.plotly_chart(scatter_matrix_metrics, use_container_width=True, sharing="streamlit")
     # st.image(capstone_court, width=1000, use_column_width=True)
 
     ## SUB-COLUMNS ##
@@ -1142,29 +1121,8 @@ with tab_0:
 
 
 with tab_1:
-    st.subheader('2EXAMPLE SUBHEADER')
-    st.image(NCAA_logo)
-    st.dataframe(East_region_styler.format('{:.2f}', na_rep='NA').set_table_styles([header, header_level0, index, top_row,
-                                                                       numbers, borders_right,
-                                                                       table_row1, table_row2, table_row3,
-                                                                       table_row4, table_row5, table_row6,
-                                                                       table_row7, table_row8, table_row9,
-                                                                       table_row10, table_row11, table_row12,
-                                                                       table_row13, table_row14, table_row15,
-                                                                       table_row16, table_row17, table_row18,
-                                                                       table_row19, table_row20, table_row21,
-                                                                       table_col1, table_col2, table_col3,
-                                                                       table_col4, table_col5, table_col6,
-                                                                       table_col7, table_col8, table_col9,
-                                                                       table_col10, table_col11, table_col12,
-                                                                       table_col13, table_col14, table_col15,
-                                                                       table_col16, table_col17, table_col18,
-                                                                       table_col19, table_col20, table_col21,
-
-                                                                       ]).set_properties(**{'min-width': '55px'},
-                                                                                         **{'max-width': '55px'},
-                                                                                         **{'column-width': '55px'},
-                                                                                         **{'width': '55px'},))
+    st.subheader('EXAMPLE SUBHEADER')
+    st.image(NCAA_logo, width=200)
 
     ## LEAGUE LOGOS ##
     # east_col_1, nba_col_2, west_col_3 = st.columns(3)
@@ -1174,47 +1132,47 @@ with tab_1:
 
 with tab_2:
     st.subheader('EXAMPLE SUBHEADER')
-    st.image(NCAA_logo)
+    st.image(NCAA_logo, width=200)
     # st.dataframe(mil_bucks_2021.style.format(col_format_dict).set_table_styles(df_styles))
 
 with tab_3:
     st.subheader('EXAMPLE SUBHEADER')
-    st.image(NCAA_logo)
+    st.image(NCAA_logo, width=200)
     # st.dataframe(lal_lakers_2020.style.format(col_format_dict).set_table_styles(df_styles))
 
 with tab_4:
     st.subheader('EXAMPLE SUBHEADER')
-    st.image(NCAA_logo)
+    st.image(NCAA_logo, width=200)
     # st.dataframe(tor_raptors_2019.style.format(col_format_dict).set_table_styles(df_styles))
 
 with tab_5:
     st.subheader('EXAMPLE SUBHEADER')
-    st.image(NCAA_logo)
+    st.image(NCAA_logo, width=200)
     # st.dataframe(gsw_warriors_2018.style.format(col_format_dict).set_table_styles(df_styles))
 
 with tab_6:
     st.subheader('EXAMPLE SUBHEADER')
-    st.image(NCAA_logo)
+    st.image(NCAA_logo, width=200)
     # st.dataframe(gsw_warriors_2017.style.format(col_format_dict).set_table_styles(df_styles))
 
 with tab_7:
     st.subheader('EXAMPLE SUBHEADER')
-    st.image(NCAA_logo)
+    st.image(NCAA_logo, width=200)
     # st.dataframe(cle_cavs_2016.style.format(col_format_dict).set_table_styles(df_styles))
 
 with tab_8:
     st.subheader('EXAMPLE SUBHEADER')
-    st.image(NCAA_logo)
+    st.image(NCAA_logo, width=200)
     # st.dataframe(gsw_warriors_2015.style.format(col_format_dict).set_table_styles(df_styles))
 
 with tab_9:
     st.subheader('EXAMPLE SUBHEADER')
-    st.image(NCAA_logo)
+    st.image(NCAA_logo, width=200)
     # st.dataframe(sas_spurs_2014.style.format(col_format_dict).set_table_styles(df_styles))
 
 with tab_10:
     st.subheader('EXAMPLE SUBHEADER')
-    st.image(NCAA_logo)
+    st.image(NCAA_logo, width=200)
     # st.dataframe(mia_heat_2013.style.format(col_format_dict).set_table_styles(df_styles))
 
 with tab_11:
